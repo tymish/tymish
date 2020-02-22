@@ -5,6 +5,9 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Tymish.Application.Employees;
+using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Cors;
 
 namespace WebApi.Controllers
 {
@@ -22,6 +25,8 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(IList<Employee>), StatusCodes.Status200OK)]
         public async Task<IActionResult> Get()
         {
             var response = await _mediator

@@ -1,6 +1,6 @@
 using System;
 
-namespace Core.Entities
+namespace Tymish.Domain.Entities
 {
     public class Employee
     {

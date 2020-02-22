@@ -1,11 +1,11 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Core.Entities;
-using Core.Gateways;
+using Tymish.Domain.Entities;
+using Tymish.Domain.Interfaces;
 using MediatR;
 
-namespace Core.UseCases
+namespace Tymish.Application.UseCases
 {
     public class RegisterEmployeeCommand : IRequest
     {

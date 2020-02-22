@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Core.Entities
+namespace Tymish.Domain.Entities
 {
     public class TimeReport
     {

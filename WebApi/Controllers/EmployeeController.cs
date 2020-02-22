@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
-using Core.Entities;
-using Core.UseCases;
+using Tymish.Domain.Entities;
+using Tymish.Application.UseCases;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;

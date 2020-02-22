@@ -1,8 +1,8 @@
-using Core.Entities;
-using Core.Gateways;
+using Tymish.Domain.Entities;
+using Tymish.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace WebApi.Database
+namespace Tymish.Persistence
 {
     public class TymishDbContext : DbContext, ITymishDbContext
     {

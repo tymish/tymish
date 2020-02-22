@@ -1,10 +1,10 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Core.Entities;
+using Tymish.Domain.Entities;
 using MediatR;
 
-namespace Core.UseCases
+namespace Tymish.Application.UseCases
 {
     public interface SubmitTimeReport : IRequest<TimeReport>
     {

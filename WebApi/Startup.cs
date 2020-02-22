@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using Core.Gateways;
+
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -15,7 +15,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using WebApi.Database;
+using Tymish.Domain.Interfaces;
+using Tymish.Persistence;
 
 namespace WebApi
 {
@@ -35,7 +36,7 @@ namespace WebApi
 
             services.AddMediatR(Assembly.GetExecutingAssembly());
 
-            services.AddMediatR(typeof(Core.UseCases.RegisterEmployeeHandler).Assembly);
+            services.AddMediatR(typeof(Tymish.Application.UseCases.RegisterEmployeeHandler).Assembly);
 
             services.AddScoped<ITymishDbContext>(s => s.GetService<TymishDbContext>());
 

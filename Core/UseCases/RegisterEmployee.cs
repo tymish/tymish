@@ -22,7 +22,9 @@ namespace Core.UseCases
         public async Task<Unit> Handle(RegisterEmployeeCommand request, CancellationToken cancellationToken)
         {
             var entity = request.Employee;
+
             _context.Set<Employee>().Add(entity);
+
             await _context.SaveChangesAsync(cancellationToken);
 
             return Unit.Value;

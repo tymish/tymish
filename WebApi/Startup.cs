@@ -21,17 +21,8 @@ namespace WebApi
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration,IWebHostEnvironment environment)
+        public Startup(IConfiguration configuration)
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(environment.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddEnvironmentVariables();
-
-            if (environment.IsDevelopment())
-            {
-                builder.AddUserSecrets<Startup>();
-            }
             Configuration = configuration;
         }
 
@@ -41,17 +32,20 @@ namespace WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
             services.AddMediatR(Assembly.GetExecutingAssembly());
+
             services.AddMediatR(typeof(Core.UseCases.RegisterEmployeeHandler).Assembly);
 
             services.AddScoped<ITymishDbContext>(s => s.GetService<TymishDbContext>());
-            services.AddDbContext<TymishDbContext>(
-                options => options.UseNpgsql(Configuration.GetConnectionString("TymishContext")));
-            
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Tymish Api", Version = "v1" });
-            });
+
+            services.AddDbContext<TymishDbContext>(options =>
+                options.UseNpgsql(Configuration.GetConnectionString("TymishContext"))
+            );
+
+            services.AddSwaggerGen(options => 
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "Tymish Api", Version = "v1" })
+            );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,9 +55,9 @@ namespace WebApi
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => {
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Tymish Api V1");
-                });
+                app.UseSwaggerUI(options => 
+                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "Tymish Api V1")
+                );
             }
 
             app.UseHttpsRedirection();

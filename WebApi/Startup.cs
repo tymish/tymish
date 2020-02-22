@@ -41,6 +41,7 @@ namespace WebApi
         {
             services.AddControllers();
             services.AddMediatR(Assembly.GetExecutingAssembly());
+            services.AddMediatR(typeof(Core.UseCases.RegisterEmployeeHandler).Assembly);
             services.AddDbContext<TymishDbContext>(
                 options => options.UseNpgsql(Configuration.GetConnectionString("TymishContext")));
             

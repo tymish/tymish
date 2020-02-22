@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
 using Tymish.Domain.Entities;
-using Tymish.Application.UseCases;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Tymish.Application.Employees;
 
 namespace WebApi.Controllers
 {
@@ -22,16 +22,19 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            return Ok("alive");
+            var response = await _mediator
+                .Send(new GetEmployeeListQuery());
+                
+            return Ok(response);
         }
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] Employee employee)
         {
             var response = await _mediator
-                .Send(new RegisterEmployeeCommand()
+                .Send(new CreateEmployeeCommand()
                 {
                     Employee = employee
                 });

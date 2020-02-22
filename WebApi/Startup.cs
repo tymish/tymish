@@ -36,7 +36,9 @@ namespace WebApi
 
             services.AddMediatR(Assembly.GetExecutingAssembly());
 
-            services.AddMediatR(typeof(Tymish.Application.UseCases.RegisterEmployeeHandler).Assembly);
+            // TODO: use dependency injection library
+            services.AddMediatR(typeof(Tymish.Application.Employees.RegisterEmployeeHandler).Assembly);
+            services.AddMediatR(typeof(Tymish.Application.Employees.GetEmployeeListHandler).Assembly);
 
             services.AddScoped<ITymishDbContext>(s => s.GetService<TymishDbContext>());
 

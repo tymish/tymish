@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Tymish.Domain.Entities;
 using MediatR;
 
-namespace Tymish.Application.UseCases
+namespace Tymish.Application.TimeReports
 {
     public interface SubmitTimeReport : IRequest<TimeReport>
     {

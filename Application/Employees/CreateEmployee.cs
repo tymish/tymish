@@ -5,21 +5,21 @@ using Tymish.Domain.Entities;
 using Tymish.Domain.Interfaces;
 using MediatR;
 
-namespace Tymish.Application.UseCases
+namespace Tymish.Application.Employees
 {
-    public class RegisterEmployeeCommand : IRequest
+    public class CreateEmployeeCommand : IRequest
     {
         public Employee Employee { get; set; }
     }
 
-    public class RegisterEmployeeHandler : IRequestHandler<RegisterEmployeeCommand, Unit>
+    public class RegisterEmployeeHandler : IRequestHandler<CreateEmployeeCommand, Unit>
     {
         private ITymishDbContext _context;
         public RegisterEmployeeHandler(ITymishDbContext context)
         {
             _context = context;
         }
-        public async Task<Unit> Handle(RegisterEmployeeCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
         {
             var entity = request.Employee;
 

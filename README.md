@@ -1,7 +1,7 @@
 # Tymish
 
 Connection string is stored in secret `~/.microsoft/usersecrets/...`
-Use Environement Variable for PROD release
+Use Environment Variable for PROD release
 
 
 ## PostgreSQL
@@ -13,3 +13,8 @@ Use Environement Variable for PROD release
 * the project requires `Microsoft.EntityFrameworkCore.Design`
 * `dotnet ef migrations add migration-name`
 * `dotnet ef database update`
+
+
+## Nice to haves
+* GraphQL for data fetching
+* 

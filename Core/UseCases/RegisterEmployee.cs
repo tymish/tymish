@@ -16,8 +16,7 @@ namespace Core.UseCases
         public RegisterEmployeeHandler() {}
         public Task<Employee> Handle(RegisterEmployee request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
-            // return Task.FromResult<Employee>(null);
+            return Task.FromResult<Employee>(request.Employee);
         }
     }
 }

@@ -1,6 +1,6 @@
 # Tymish
 
-Connection string is stored in secret
+Connection string is stored in secret `~/.microsoft/usersecrets/...`
 Use Environement Variable for PROD release
 
 

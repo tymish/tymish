@@ -1,4 +1,7 @@
 using System;
+using Core.Entities;
+using Core.UseCases;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -8,10 +11,12 @@ namespace WebApi.Controllers
     [Route("employee")]
     public class EmployeeController : ControllerBase
     {
+        private readonly IMediator _mediator;
         private readonly ILogger<EmployeeController> _logger;
 
-        public EmployeeController(ILogger<EmployeeController> logger)
+        public EmployeeController(IMediator mediator, ILogger<EmployeeController> logger)
         {
+            _mediator = mediator;
             _logger = logger;
         }
 
@@ -19,6 +24,17 @@ namespace WebApi.Controllers
         public IActionResult Get()
         {
             return Ok("alive");
+        }
+
+        [HttpPost]
+        public IActionResult Post([FromBody] Employee employee)
+        {
+            var response = _mediator
+                .Send(new RegisterEmployee()
+                {
+                    Employee = employee
+                });
+            return Ok(response);
         }
     }
 }

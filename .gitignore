@@ -1,2 +1,5 @@
 bin/
 obj/
+
+# ignore migrations for now
+Migrations

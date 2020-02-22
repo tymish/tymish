@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Core.Entities;
 using Core.UseCases;
 using MediatR;
@@ -27,10 +28,10 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] Employee employee)
+        public async Task<IActionResult> Post([FromBody] Employee employee)
         {
-            var response = _mediator
-                .Send(new RegisterEmployee()
+            var response = await _mediator
+                .Send(new RegisterEmployeeCommand()
                 {
                     Employee = employee
                 });

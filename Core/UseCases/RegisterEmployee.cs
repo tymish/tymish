@@ -2,21 +2,30 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Core.Entities;
+using Core.Gateways;
 using MediatR;
 
 namespace Core.UseCases
 {
-    public class RegisterEmployee : IRequest<Employee>
+    public class RegisterEmployeeCommand : IRequest
     {
         public Employee Employee { get; set; }
     }
 
-    public class RegisterEmployeeHandler : IRequestHandler<RegisterEmployee, Employee>
+    public class RegisterEmployeeHandler : IRequestHandler<RegisterEmployeeCommand, Unit>
     {
-        public RegisterEmployeeHandler() {}
-        public Task<Employee> Handle(RegisterEmployee request, CancellationToken cancellationToken)
+        private ITymishDbContext _context;
+        public RegisterEmployeeHandler(ITymishDbContext context)
         {
-            return Task.FromResult<Employee>(request.Employee);
+            _context = context;
+        }
+        public async Task<Unit> Handle(RegisterEmployeeCommand request, CancellationToken cancellationToken)
+        {
+            var entity = request.Employee;
+            _context.Set<Employee>().Add(entity);
+            await _context.SaveChangesAsync(cancellationToken);
+
+            return Unit.Value;
         }
     }
 }

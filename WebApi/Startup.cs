@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Core.Gateways;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -42,6 +43,8 @@ namespace WebApi
             services.AddControllers();
             services.AddMediatR(Assembly.GetExecutingAssembly());
             services.AddMediatR(typeof(Core.UseCases.RegisterEmployeeHandler).Assembly);
+
+            services.AddScoped<ITymishDbContext>(s => s.GetService<TymishDbContext>());
             services.AddDbContext<TymishDbContext>(
                 options => options.UseNpgsql(Configuration.GetConnectionString("TymishContext")));
             

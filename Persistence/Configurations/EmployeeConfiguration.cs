@@ -10,6 +10,19 @@ namespace Tymish.Persistence.Configurations
         {
             builder.Property(e => e.Id)
                 .HasColumnName("EmployeeId");
+            
+            builder.Property(e => e.GivenName)
+                .IsRequired();
+            
+            builder.Property(e => e.FamilyName)
+                .IsRequired();
+
+            builder.Property(e => e.Email)
+                .IsRequired()
+                .HasMaxLength(320);
+            
+            builder.Property(e => e.HourlyPay)
+                .IsRequired();
         }
     }
 }

@@ -11,10 +11,9 @@ Use Environment Variable for PROD release
 
 ## Entity framework Code first migration
 * the project requires `Microsoft.EntityFrameworkCore.Design`
-* `dotnet ef migrations add migration-name`
+* `dotnet ef migrations add migration-name -p ../Persistence`
 * `dotnet ef database update`
 
 
 ## Nice to haves
 * GraphQL for data fetching
-* 

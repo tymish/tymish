@@ -10,5 +10,6 @@ namespace Tymish.Domain.Entities
         public DateTime Submitted { get; set; }
         public DateTime Approved { get; set; }
         public IList<TimeEntry> TimeEntries { get; set; }
+        public virtual Employee Employee { get; set; }
     }
 }

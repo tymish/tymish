@@ -9,10 +9,16 @@ Use Environment Variable for PROD release
 * `createuser --interactive --pwprompt`
 * user name is `dev`
 
+### Drop database
+* `sudo -i -u postgres`
+* `psql`
+* `\l`
+* `drop database "Tymish";`
+
 ## Entity framework Code first migration
 * the project requires `Microsoft.EntityFrameworkCore.Design`
-* `dotnet ef migrations add migration-name -p ../Persistence`
-* `dotnet ef database update`
+* `dotnet ef migrations add migration-name -p Persistence -s WebApi`
+* `dotnet ef database update -p Persistence -s WebApi`
 
 
 ## Nice to haves

@@ -11,7 +11,7 @@ using Tymish.Application.Employees.Queries;
 namespace WebApi.Controllers
 {
     [ApiController]
-    [Route("employee")]
+    [Route("employees")]
     public class EmployeeController : ControllerBase
     {
         private readonly IMediator _mediator;

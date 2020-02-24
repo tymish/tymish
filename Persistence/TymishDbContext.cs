@@ -13,6 +13,10 @@ namespace Tymish.Persistence
 
         public DbSet<Employee> Employees { get; set; }
         public DbSet<TimeReport> TimeReports { get; set; }
-        public DbSet<TimeEntry> TimeEntries { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.ApplyConfigurationsFromAssembly(typeof(TymishDbContext).Assembly);
+        }
     }
 }

@@ -29,12 +29,10 @@ namespace WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-
             services.AddMediatR(Assembly.GetExecutingAssembly());
 
             // TODO: use dependency injection library
-            services.AddMediatR(typeof(Tymish.Application.Employees.Commands.CreateEmployeeHandler).Assembly);
-            services.AddMediatR(typeof(Tymish.Application.Employees.Queries.GetEmployeeListHandler).Assembly);
+            services.AddMediatR(Assembly.Load("Application"));
 
             services.AddScoped<ITymishDbContext>(s => s.GetService<TymishDbContext>());
 

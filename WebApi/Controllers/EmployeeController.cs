@@ -39,6 +39,13 @@ namespace WebApi.Controllers
             return Ok(response);
         }
 
+        [HttpPut]
+        public async Task<IActionResult> Put([FromBody] UpdateEmployeeCommand request)
+        {
+            var response = await _mediator.Send(request);
+            return Ok(response);
+        }
+
         [HttpDelete]
         public async Task<IActionResult> Delete([FromBody] DeleteEmployeeCommand request)
         {

@@ -8,9 +8,6 @@ namespace Tymish.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<TimeReport> builder)
         {
-            builder.Property(e => e.Id)
-                .HasColumnName("TimeReportId");
-
             builder.Property(e => e.TimeEntries)
                 .HasColumnType("jsonb");
         }

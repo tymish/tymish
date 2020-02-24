@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Tymish.Domain.Entities;
 using Tymish.Domain.Interfaces;
 
-namespace Tymish.Application.Employees
+namespace Tymish.Application.Employees.Queries
 {
     public class GetEmployeeListQuery : IRequest<IList<Employee>>
     {

@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -37,8 +33,8 @@ namespace WebApi
             services.AddMediatR(Assembly.GetExecutingAssembly());
 
             // TODO: use dependency injection library
-            services.AddMediatR(typeof(Tymish.Application.Employees.RegisterEmployeeHandler).Assembly);
-            services.AddMediatR(typeof(Tymish.Application.Employees.GetEmployeeListHandler).Assembly);
+            services.AddMediatR(typeof(Tymish.Application.Employees.Commands.CreateEmployeeHandler).Assembly);
+            services.AddMediatR(typeof(Tymish.Application.Employees.Queries.GetEmployeeListHandler).Assembly);
 
             services.AddScoped<ITymishDbContext>(s => s.GetService<TymishDbContext>());
 

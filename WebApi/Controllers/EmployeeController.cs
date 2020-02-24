@@ -1,13 +1,12 @@
-using System;
 using System.Threading.Tasks;
-using Tymish.Domain.Entities;
+using System.Collections.Generic;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using Tymish.Application.Employees;
 using Microsoft.AspNetCore.Http;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Cors;
+using Microsoft.Extensions.Logging;
+using Tymish.Domain.Entities;
+using Tymish.Application.Employees.Commands;
+using Tymish.Application.Employees.Queries;
 
 namespace WebApi.Controllers
 {
@@ -36,13 +35,9 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] Employee employee)
+        public async Task<IActionResult> Post([FromBody] CreateEmployeeCommand request)
         {
-            var response = await _mediator
-                .Send(new CreateEmployeeCommand()
-                {
-                    Employee = employee
-                });
+            var response = await _mediator.Send(request);
             return Ok(response);
         }
     }

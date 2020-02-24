@@ -8,8 +8,12 @@ namespace Tymish.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Employee> builder)
         {
-            builder.Property(e => e.Id)
-                .HasColumnName("EmployeeId");
+            builder.HasKey(e => e.Id);
+            builder.HasAlternateKey(e => e.EmployeeNumber);
+
+            builder.Property(e => e.EmployeeNumber)
+                .ValueGeneratedOnAdd()
+                .IsRequired();
             
             builder.Property(e => e.GivenName)
                 .IsRequired();
@@ -18,10 +22,11 @@ namespace Tymish.Persistence.Configurations
                 .IsRequired();
 
             builder.Property(e => e.Email)
-                .IsRequired()
-                .HasMaxLength(320);
+                .HasMaxLength(320)
+                .IsRequired();
             
             builder.Property(e => e.HourlyPay)
+                .HasColumnType("money")
                 .IsRequired();
         }
     }

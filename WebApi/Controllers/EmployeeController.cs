@@ -28,14 +28,19 @@ namespace WebApi.Controllers
         [ProducesResponseType(typeof(IList<Employee>), StatusCodes.Status200OK)]
         public async Task<IActionResult> Get()
         {
-            var response = await _mediator
-                .Send(new GetEmployeeListQuery());
-                
+            var response = await _mediator.Send(new GetEmployeeListQuery());
             return Ok(response);
         }
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CreateEmployeeCommand request)
+        {
+            var response = await _mediator.Send(request);
+            return Ok(response);
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete([FromBody] DeleteEmployeeCommand request)
         {
             var response = await _mediator.Send(request);
             return Ok(response);

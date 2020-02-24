@@ -1,0 +1,8 @@
+{
+    "scripts": {
+        "start": "dotnet run -p WebApi",
+        "build": "dotnet build WebApi",
+        "add-migration": "dotnet ef migrations add -p Persistence -s WebApi",
+        "update-db": "dotnet ef database update -p Persistence -s WebApi"
+    }
+}

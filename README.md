@@ -17,8 +17,8 @@ Use Environment Variable for PROD release
 
 ## Entity framework Code first migration
 * the project requires `Microsoft.EntityFrameworkCore.Design`
-* `dotnet ef migrations add migration-name -p Persistence -s WebApi`
-* `dotnet ef database update -p Persistence -s WebApi`
+* `yarn add-migration <migration-name>`
+* `yarn update-db`
 
 
 ## Nice to haves

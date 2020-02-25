@@ -26,8 +26,7 @@ namespace Tymish.Application.TimeReports.Commands
         public async Task<TimeReport> Handle(CreateTimeReportCommand request, CancellationToken cancellationToken)
         {
             var employee = await _context
-                .Set<Employee>()
-                .SingleOrDefaultAsync(
+                .Set<Employee>().SingleOrDefaultAsync(
                     e => e.EmployeeNumber == request.EmployeeNumber,
                     cancellationToken
                 );

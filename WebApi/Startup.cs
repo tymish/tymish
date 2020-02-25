@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Tymish.Domain.Interfaces;
 using Tymish.Persistence;
+using Tymish.WebApi.Middleware;
 
 namespace WebApi
 {
@@ -58,11 +59,16 @@ namespace WebApi
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(options => 
-                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "Tymish Api V1")
-                );
             }
+            else
+            {
+                app.UseMiddleware<ExceptionHandler>();
+            }
+            // TODO(Hubert): In production move this to IsDevelopment()
+            app.UseSwagger();
+            app.UseSwaggerUI(options => 
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Tymish Api V1")
+            );
 
             app.UseHttpsRedirection();
 

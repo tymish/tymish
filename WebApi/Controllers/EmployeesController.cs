@@ -9,7 +9,7 @@ using Tymish.Application.Employees.Commands;
 using Tymish.Application.Employees.Queries;
 using System;
 
-namespace WebApi.Controllers
+namespace Tymish.WebApi.Controllers
 {
     [ApiController]
     [Route("employees")]

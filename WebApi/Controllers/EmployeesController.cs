@@ -12,18 +12,18 @@ namespace WebApi.Controllers
 {
     [ApiController]
     [Route("employees")]
-    public class EmployeeController : ControllerBase
+    public class EmployeesController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly ILogger<EmployeeController> _logger;
+        private readonly ILogger<EmployeesController> _logger;
 
-        public EmployeeController(IMediator mediator, ILogger<EmployeeController> logger)
+        public EmployeesController(IMediator mediator, ILogger<EmployeesController> logger)
         {
             _mediator = mediator;
             _logger = logger;
         }
 
-        [HttpGet]
+        [HttpGet(Name="getEmployeeList")]
         [Produces("application/json")]
         [ProducesResponseType(typeof(IList<Employee>), StatusCodes.Status200OK)]
         public async Task<IActionResult> Get()
@@ -32,21 +32,21 @@ namespace WebApi.Controllers
             return Ok(response);
         }
 
-        [HttpPost]
+        [HttpPost(Name="post")]
         public async Task<IActionResult> Post([FromBody] CreateEmployeeCommand request)
         {
             var response = await _mediator.Send(request);
             return Ok(response);
         }
 
-        [HttpPut]
+        [HttpPut(Name="put")]
         public async Task<IActionResult> Put([FromBody] UpdateEmployeeCommand request)
         {
             var response = await _mediator.Send(request);
             return Ok(response);
         }
 
-        [HttpDelete]
+        [HttpDelete(Name="delete")]
         public async Task<IActionResult> Delete([FromBody] DeleteEmployeeCommand request)
         {
             var response = await _mediator.Send(request);

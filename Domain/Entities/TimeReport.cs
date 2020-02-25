@@ -8,7 +8,7 @@ namespace Tymish.Domain.Entities
         public Guid Id { get; set; }
         public DateTime Issued { get; set; }
         public DateTime Submitted { get; set; }
-        public DateTime Approved { get; set; }
+        public DateTime Paid { get; set; }
         public IList<TimeEntry> TimeEntries { get; set; }
         public virtual Employee Employee { get; set; }
     }

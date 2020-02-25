@@ -8,7 +8,7 @@ namespace Tymish.Application.TimeReports.Commands
 {
     public interface SubmitTimeReportCommand : IRequest<TimeReport>
     {
-        public TimeReport TimeReport { get; set; }
+        public Guid Id { get; set; }
     }
 
     public class SubmitTimeReportHandler : IRequestHandler<SubmitTimeReportCommand, TimeReport>

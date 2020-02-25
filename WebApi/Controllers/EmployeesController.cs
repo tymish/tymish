@@ -24,16 +24,17 @@ namespace WebApi.Controllers
             _logger = logger;
         }
 
-        [HttpGet(Name="getEmployeeList")]
+        [HttpGet("list", Name="getEmployeeList")]
+        [Produces("application/json")]
         [ProducesResponseType(typeof(IList<Employee>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> GetEmployeeList()
         {
             var response = await _mediator.Send(new GetEmployeeListQuery());
             return Ok(response);
         }
 
-        [HttpGet(Name="getEmployeeById")]
-        [Route("{id:Guid}")]
+        [HttpGet("{id:Guid}", Name="getEmployeeById")]
+        [Produces("application/json")]
         [ProducesResponseType(typeof(Employee), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetById([FromRoute] Guid id)
         {
@@ -41,8 +42,7 @@ namespace WebApi.Controllers
             return Ok(response);
         }
 
-        [HttpGet(Name="getEmployeeByNumber")]
-        [Route("{number:int}")]
+        [HttpGet("{number:int}", Name="getEmployeeByNumber")]
         [Produces("application/json")]
         [ProducesResponseType(typeof(Employee), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetByNumber([FromRoute] int number)

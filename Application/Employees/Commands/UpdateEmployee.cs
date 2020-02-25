@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Tymish.Application.Exceptions;
 using Tymish.Domain.Entities;
 using Tymish.Domain.Interfaces;
 
@@ -32,6 +33,11 @@ namespace Tymish.Application.Employees.Commands
 
             var employee = dbSet
                 .SingleOrDefault(e => e.EmployeeNumber == request.EmployeeNumber);
+            
+            if (employee == default(Employee))
+            {
+                throw new NotFoundException(nameof(Employee), request.EmployeeNumber);
+            }
 
             // TODO: This must be done better to handle scenarios
             employee.GivenName = request.GivenName;

@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Tymish.Application.Exceptions;
 using Tymish.Domain.Entities;
 using Tymish.Domain.Interfaces;
 
@@ -26,10 +27,17 @@ namespace Tymish.Application.Employees.Queries
 
         public async Task<Employee> Handle(GetEmployeeByNumberQuery request, CancellationToken cancellationToken)
         {
-            return await _context.Set<Employee>().SingleOrDefaultAsync(
+            var entity = await _context.Set<Employee>().SingleOrDefaultAsync(
                 e => e.EmployeeNumber == request.EmployeeNumber,
                 cancellationToken
             );
+
+            if (entity == default(Employee))
+            {
+                throw new NotFoundException(nameof(Employee), request.EmployeeNumber);
+            }
+
+            return entity;
         }
     }
 }

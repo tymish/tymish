@@ -7,7 +7,7 @@ using MediatR;
 
 namespace Tymish.Application.Employees.Commands
 {
-    public class CreateEmployeeCommand : IRequest
+    public class CreateEmployeeCommand : IRequest<Employee>
     {
         public string GivenName { get; set; }
         public string FamilyName { get; set; }
@@ -15,7 +15,7 @@ namespace Tymish.Application.Employees.Commands
         public decimal HourlyPay { get; set; }
     }
 
-    public class CreateEmployeeHandler : IRequestHandler<CreateEmployeeCommand, Unit>
+    public class CreateEmployeeHandler : IRequestHandler<CreateEmployeeCommand, Employee>
     {
         private ITymishDbContext _context;
 
@@ -24,7 +24,7 @@ namespace Tymish.Application.Employees.Commands
             _context = context;
         }
 
-        public async Task<Unit> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
+        public async Task<Employee> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
         {
             var entity = new Employee 
             {
@@ -39,7 +39,7 @@ namespace Tymish.Application.Employees.Commands
 
             await _context.SaveChangesAsync(cancellationToken);
 
-            return Unit.Value;
+            return entity;
         }
     }
 }

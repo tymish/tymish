@@ -52,10 +52,12 @@ namespace Tymish.WebApi.Controllers
         }
 
         [HttpPost(Name="post")]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(Employee), StatusCodes.Status201Created)]
         public async Task<IActionResult> Post([FromBody] CreateEmployeeCommand request)
         {
             var response = await _mediator.Send(request);
-            return Ok(response);
+            return Created($"/employees/{response.EmployeeNumber}", response);
         }
 
         [HttpPut(Name="put")]

@@ -51,7 +51,7 @@ namespace Tymish.WebApi.Controllers
             return Ok(response);
         }
 
-        [HttpPost(Name="post")]
+        [HttpPost(Name="createEmployee")]
         [Produces("application/json")]
         [ProducesResponseType(typeof(Employee), StatusCodes.Status201Created)]
         public async Task<IActionResult> Post([FromBody] CreateEmployeeCommand request)
@@ -60,14 +60,14 @@ namespace Tymish.WebApi.Controllers
             return Created($"/employees/{response.EmployeeNumber}", response);
         }
 
-        [HttpPut(Name="put")]
+        [HttpPut(Name="updateEmployee")]
         public async Task<IActionResult> Put([FromBody] UpdateEmployeeCommand request)
         {
             var response = await _mediator.Send(request);
             return Ok(response);
         }
 
-        [HttpDelete(Name="delete")]
+        [HttpDelete(Name="deleteEmployee")]
         public async Task<IActionResult> Delete([FromBody] DeleteEmployeeCommand request)
         {
             var response = await _mediator.Send(request);

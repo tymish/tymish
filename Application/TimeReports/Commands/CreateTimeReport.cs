@@ -13,7 +13,6 @@ namespace Tymish.Application.TimeReports.Commands
     public class CreateTimeReportCommand : IRequest<TimeReport>
     {
         public int EmployeeNumber { get; set; }
-        public IList<TimeEntry> TimeEntries { get; set; }
     }
 
     public class CreateTimeReportHandler : IRequestHandler<CreateTimeReportCommand, TimeReport>
@@ -42,11 +41,11 @@ namespace Tymish.Application.TimeReports.Commands
                 Issued = default(DateTime),
                 Submitted = default(DateTime),
                 Paid = default(DateTime),
-                TimeEntries = request.TimeEntries,
+                TimeEntries = null,
                 Employee = employee
             };
 
-            _context.Set<TimeReport>().Add(entity);
+            await _context.Set<TimeReport>().AddAsync(entity);
 
             await _context.SaveChangesAsync(cancellationToken);
             

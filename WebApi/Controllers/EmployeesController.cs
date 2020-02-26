@@ -9,6 +9,7 @@ using Tymish.Application.Employees.Commands;
 using Tymish.Application.Employees.Queries;
 using System;
 using Tymish.Application.TimeReports.Commands;
+using Tymish.Application.TimeReports.Query;
 
 namespace Tymish.WebApi.Controllers
 {
@@ -49,6 +50,17 @@ namespace Tymish.WebApi.Controllers
         public async Task<IActionResult> GetByNumber([FromRoute] int number)
         {
             var response = await _mediator.Send(new GetEmployeeByNumberQuery(number));
+            return Ok(response);
+        }
+
+        [HttpGet("{number:int}/time-reports", Name="getTimeReportsForEmployee")]
+        public async Task<IActionResult> GetTimeReportsForEmployee([FromRoute] int number)
+        {
+            var request = new GetTimeReportsByEmployeeNumberQuery
+            {
+                EmployeeNumber = number
+            };
+            var response = await _mediator.Send(request);
             return Ok(response);
         }
 

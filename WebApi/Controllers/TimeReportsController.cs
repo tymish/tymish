@@ -5,6 +5,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Tymish.Application.TimeReports.Commands;
+using Tymish.Application.TimeReports.Query;
 using Tymish.Domain.Entities;
 
 namespace Tymish.WebApi.Controllers
@@ -20,6 +21,16 @@ namespace Tymish.WebApi.Controllers
         {
             _mediator = mediator;
         }
+
+        [HttpGet("{id:guid}", Name="getTimeReportById")]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(TimeReport), StatusCodes.Status200OK)]
+        public async Task<IActionResult> Get([FromRoute] Guid id)
+        {
+            var response = await _mediator.Send(new GetTimeReportByIdQuery(id));
+            return Ok(response);
+        }
+
 
         [HttpPost(Name="createTimeReport")]
         [Produces("application/json")]

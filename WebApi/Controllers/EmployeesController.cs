@@ -24,7 +24,7 @@ namespace Tymish.WebApi.Controllers
             _logger = logger;
         }
 
-        [HttpGet("list", Name="getEmployeeList")]
+        [HttpGet(Name="getEmployeeList")]
         [Produces("application/json")]
         [ProducesResponseType(typeof(IList<Employee>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetEmployeeList()

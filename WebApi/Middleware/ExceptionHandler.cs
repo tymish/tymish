@@ -25,7 +25,15 @@ namespace Tymish.WebApi.Middleware
                 context.Response.StatusCode = StatusCodes.Status404NotFound;
                 context.Response.Headers.Clear();
                 
-                // Log e
+                // TODO: Log e
+                Console.WriteLine(e.Message);
+            }
+            catch (CannotCreateException e)
+            {
+                context.Response.StatusCode = StatusCodes.Status422UnprocessableEntity;
+                context.Response.Headers.Clear();
+
+                // TODO: Log e
                 Console.WriteLine(e.Message);
             }
         }

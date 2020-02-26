@@ -24,6 +24,19 @@ namespace Tymish.Application.TimeReports.Commands
         }
         public async Task<TimeReport> Handle(CreateTimeReportCommand request, CancellationToken cancellationToken)
         {
+            // check for non-issued time reports before creating
+            var existingTimeReport = await _context.Set<TimeReport>()
+                .FirstOrDefaultAsync(e
+                    => e.Employee.EmployeeNumber == request.EmployeeNumber 
+                    && e.Issued == default(DateTime)
+                );
+
+            if (existingTimeReport != default(TimeReport))
+            {
+                var reason = $"a non-issued time report still exists for employee ({request.EmployeeNumber})";
+                throw new CannotCreateException(nameof(TimeReport), reason);
+            }
+
             var employee = await _context
                 .Set<Employee>().SingleOrDefaultAsync(
                     e => e.EmployeeNumber == request.EmployeeNumber,

@@ -31,16 +31,6 @@ namespace Tymish.WebApi.Controllers
             return Ok(response);
         }
 
-
-        [HttpPost(Name="createTimeReport")]
-        [Produces("application/json")]
-        [ProducesResponseType(typeof(TimeReport), StatusCodes.Status201Created)]
-        public async Task<IActionResult> Post([FromBody] CreateTimeReportCommand request)
-        {
-            var response = await _mediator.Send(request);
-            return Created($"time-reports/{response.Id}", response);
-        }
-
         [HttpPost("bulk", Name="createTimeReports")]
         [Produces("application/json")]
         [ProducesResponseType(typeof(Array), StatusCodes.Status202Accepted)]

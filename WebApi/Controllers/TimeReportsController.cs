@@ -31,6 +31,15 @@ namespace Tymish.WebApi.Controllers
             return Ok(response);
         }
 
+        [HttpPut("{id:guid}/submitted", Name="submitTimeReport")]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(TimeReport), StatusCodes.Status200OK)]
+        public async Task<IActionResult> SubmitTimeReport([FromRoute] Guid id)
+        {
+            var response = await _mediator.Send(new SubmitTimeReportCommand{Id = id});
+            return Ok(response);
+        }
+
         [HttpPost("bulk", Name="createTimeReports")]
         [Produces("application/json")]
         [ProducesResponseType(typeof(Array), StatusCodes.Status202Accepted)]

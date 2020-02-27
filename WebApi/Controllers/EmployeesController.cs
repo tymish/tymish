@@ -86,6 +86,15 @@ namespace Tymish.WebApi.Controllers
             return Created($"time-reports/{response.Id}", response);
         }
 
+        [HttpPut("{number:guid}/time-report/issued", Name="issueTimeReportForEmployee")]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(TimeReport), StatusCodes.Status200OK)]
+        public async Task<IActionResult> IssueTimeReport([FromRoute] int number)
+        {
+            var response = await _mediator.Send(new IssueTimeReportCommand{EmployeeNumber = number});
+            return Ok(response);
+        }
+
         [HttpPut(Name="updateEmployee")]
         public async Task<IActionResult> Put([FromBody] UpdateEmployeeCommand request)
         {

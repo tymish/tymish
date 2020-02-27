@@ -9,32 +9,34 @@ using Tymish.Application.Exceptions;
 
 namespace Tymish.Application.TimeReports.Commands
 {
-    public class PayTimeReportCommand : IRequest<TimeReport>
+    public class IssueTimeReportCommand : IRequest<TimeReport>
     {
-        /// <summary>TimeReport.Id</summary>
-        public Guid Id { get; set; }
+        public int EmployeeNumber { get; set; }
     }
 
-    public class PayTimeReportHandler : IRequestHandler<PayTimeReportCommand, TimeReport>
+    public class IssueTimeReportHandler : IRequestHandler<IssueTimeReportCommand, TimeReport>
     {
         private readonly ITymishDbContext _context;
 
-        public PayTimeReportHandler(ITymishDbContext context) {
+        public IssueTimeReportHandler(ITymishDbContext context) {
             _context = context;
         }
-        public async Task<TimeReport> Handle(PayTimeReportCommand request, CancellationToken cancellationToken)
+
+        public async Task<TimeReport> Handle(IssueTimeReportCommand request, CancellationToken cancellationToken)
         {
             var timeReport = await _context.Set<TimeReport>()
-                .SingleOrDefaultAsync(
-                    e => e.Id == request.Id,
+                .SingleOrDefaultAsync(e
+                    => e.Employee.EmployeeNumber == request.EmployeeNumber
+                    && e.Issued == default(DateTime),
                     cancellationToken
                 );
             
             if (timeReport == default(TimeReport))
             {
-                throw new NotFoundException(nameof(TimeReport), request.Id);
+                // TODO: This exception message is bad
+                throw new NotFoundException(nameof(TimeReport), request.EmployeeNumber);
             }
-            
+
             timeReport.Issued = DateTime.UtcNow;
 
             _context.Set<TimeReport>().Update(timeReport);

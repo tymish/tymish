@@ -31,6 +31,20 @@ namespace Tymish.WebApi.Controllers
             return Ok(response);
         }
 
+        [HttpGet(Name="getTimeReportByIssuedMonth")]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(IList<TimeReport>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> Get([FromQuery] int month, [FromQuery] int year)
+        {
+            var response = await _mediator
+                .Send(new GetTimeReportsByMonthQuery 
+                {
+                    IssuedMonth = month,
+                    IssuedYear = year
+                });
+            return Ok(response);
+        }
+
         [HttpPut("{id:guid}/submitted", Name="submitTimeReport")]
         [Produces("application/json")]
         [ProducesResponseType(typeof(TimeReport), StatusCodes.Status200OK)]

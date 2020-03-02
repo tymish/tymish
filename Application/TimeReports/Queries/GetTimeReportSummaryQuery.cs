@@ -6,6 +6,7 @@ using MediatR;
 using Tymish.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Tymish.Application.TimeReports.Query
 {
@@ -38,10 +39,13 @@ namespace Tymish.Application.TimeReports.Query
         public async Task<TimeReportSummary> Handle(GetTimeReportSummaryQuery request, CancellationToken cancellationToken)
         {
             var timeReports = await _context.Set<TimeReport>()
+                // TODO: Broken Code right now
+                .Include(e => e.TimeEntries)
+                .Include(e => e.Employee)
                 .Where(e
                     => e.Issued.Month == request.IssuedMonth
                     && e.Issued.Year == request.IssuedYear)
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
 
             var summary = new TimeReportSummary
             {
@@ -56,11 +60,20 @@ namespace Tymish.Application.TimeReports.Query
                 ReportsPaidCount = timeReports
                     .Where(e => e.Paid != default(DateTime))
                     .Count(),
-                AmountOwing = 0, // TODO
+                AmountOwing = timeReports
+                    .Select(e=> this.CalculateAmountOwing(e.Employee, e.TimeEntries))
+                    .Sum(),
                 AmountPaid = 0  // TODO
             };
 
             return summary;
+        }
+
+        public decimal CalculateAmountOwing(Employee employee, IList<TimeEntry> timeEntries)
+        {
+            return timeEntries
+                .Select(e => (e.End - e.Start).Hours * employee.HourlyPay)
+                .Sum();
         }
     }
 }

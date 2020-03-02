@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Tymish.Domain.Entities
 {
@@ -10,5 +11,6 @@ namespace Tymish.Domain.Entities
         public string FamilyName { get; set; }
         public string Email { get; set; }
         public Decimal HourlyPay { get; set; }
+        public virtual IList<TimeReport> TimeReports { get; set; }
     }
 }

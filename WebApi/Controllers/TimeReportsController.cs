@@ -31,7 +31,7 @@ namespace Tymish.WebApi.Controllers
             return Ok(response);
         }
 
-        [HttpGet(Name="getTimeReportByIssuedMonth")]
+        [HttpGet(Name="getTimeReportsByIssuedMonth")]
         [Produces("application/json")]
         [ProducesResponseType(typeof(IList<TimeReport>), StatusCodes.Status200OK)]
         public async Task<IActionResult> Get([FromQuery] int month, [FromQuery] int year)

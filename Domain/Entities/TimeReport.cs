@@ -10,6 +10,7 @@ namespace Tymish.Domain.Entities
         public DateTime Submitted { get; set; }
         public DateTime Paid { get; set; }
         public IList<TimeEntry> TimeEntries { get; set; }
+        public Guid EmployeeId {get; set;}
         public virtual Employee Employee { get; set; }
     }
 

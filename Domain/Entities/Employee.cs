@@ -11,6 +11,13 @@ namespace Tymish.Domain.Entities
         public string FamilyName { get; set; }
         public string Email { get; set; }
         public Decimal HourlyPay { get; set; }
-        public virtual IList<TimeReport> TimeReports { get; set; }
+        public virtual IList<TimeReport>? TimeReports { get; set; }
+
+        public Employee()
+        {
+            GivenName = string.Empty;
+            FamilyName = string.Empty;
+            Email = string.Empty;
+        }
     }
 }

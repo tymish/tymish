@@ -10,8 +10,12 @@ namespace Tymish.Domain.Entities
         public DateTime Submitted { get; set; }
         public DateTime Paid { get; set; }
         public IList<TimeEntry> TimeEntries { get; set; }
-        public Guid EmployeeId {get; set;}
-        public virtual Employee Employee { get; set; }
+        public virtual Employee? Employee { get; set; }
+
+        public TimeReport()
+        {
+            TimeEntries = new List<TimeEntry>();
+        }
     }
 
     public class TimeEntry
@@ -20,5 +24,10 @@ namespace Tymish.Domain.Entities
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
         public string Comments { get; set; }
+
+        public TimeEntry()
+        {
+            Comments = string.Empty;
+        }
     }
 }

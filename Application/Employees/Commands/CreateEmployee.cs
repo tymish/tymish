@@ -4,14 +4,20 @@ using System.Threading.Tasks;
 using Tymish.Domain.Entities;
 using Tymish.Domain.Interfaces;
 using MediatR;
+using System.ComponentModel.DataAnnotations;
 
 namespace Tymish.Application.Employees.Commands
 {
     public class CreateEmployeeCommand : IRequest<Employee>
     {
+        [Required]
         public string GivenName { get; set; }
+        [Required]
         public string FamilyName { get; set; }
+        [Required]
+        [EmailAddress]
         public string Email { get; set; }
+        [Range(0, 100)]
         public decimal HourlyPay { get; set; }
     }
 

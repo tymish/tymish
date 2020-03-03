@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
@@ -11,10 +12,16 @@ namespace Tymish.Application.Employees.Commands
 {
     public class UpdateEmployeeCommand : IRequest
     {
+        [Required]
         public int EmployeeNumber { get; set; }
+        [Required]
         public string GivenName { get; set; }
+        [Required]
         public string FamilyName { get; set; }
+        [Required]
+        [EmailAddress]
         public string Email { get; set; }
+        [Range(0,100)]
         public decimal HourlyPay { get; set; }
     }
 

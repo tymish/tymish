@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
@@ -11,6 +12,8 @@ namespace Tymish.Application.Employees.Commands
 {
     public class DeleteEmployeeCommand : IRequest
     {
+        [Required]
+        [Range(0, int.MaxValue)]
         public int EmployeeNumber { get; set; }   
     }
 

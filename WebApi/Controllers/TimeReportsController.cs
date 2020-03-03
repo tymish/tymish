@@ -14,7 +14,6 @@ namespace Tymish.WebApi.Controllers
     [Route("time-reports")]
     public class TimeReportsController : ControllerBase
     {
-
         private readonly IMediator _mediator;
 
         public TimeReportsController(IMediator mediator)

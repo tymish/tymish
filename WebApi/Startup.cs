@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 using Tymish.Domain.Interfaces;
 using Tymish.Persistence;
 using Tymish.WebApi.Middleware;
@@ -29,6 +30,10 @@ namespace WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvc().AddNewtonsoftJson(options =>
+            {
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            });
             services.AddControllers();
             services.AddMediatR(Assembly.GetExecutingAssembly());
 
@@ -41,7 +46,7 @@ namespace WebApi
                 options.UseNpgsql(Configuration.GetConnectionString("TymishContext"))
             );
 
-            services.AddSwaggerGen(options => 
+            services.AddSwaggerGen(options =>
                 options.SwaggerDoc("v1", new OpenApiInfo { Title = "Tymish Api", Version = "v1" })
             );
         }
@@ -66,7 +71,7 @@ namespace WebApi
             }
             // TODO(Hubert): In production move this to IsDevelopment()
             app.UseSwagger();
-            app.UseSwaggerUI(options => 
+            app.UseSwaggerUI(options =>
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "Tymish Api V1")
             );
 

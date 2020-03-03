@@ -39,8 +39,6 @@ namespace Tymish.Application.TimeReports.Query
         public async Task<TimeReportSummary> Handle(GetTimeReportSummaryQuery request, CancellationToken cancellationToken)
         {
             var timeReports = await _context.Set<TimeReport>()
-                // TODO: Broken Code right now
-                .Include(e => e.TimeEntries)
                 .Include(e => e.Employee)
                 .Where(e
                     => e.Issued.Month == request.IssuedMonth
@@ -71,6 +69,10 @@ namespace Tymish.Application.TimeReports.Query
 
         public decimal CalculateAmountOwing(Employee employee, IList<TimeEntry> timeEntries)
         {
+            if (timeEntries == null)
+            {
+                return 0M;
+            }
             return timeEntries
                 .Select(e => (e.End - e.Start).Hours * employee.HourlyPay)
                 .Sum();

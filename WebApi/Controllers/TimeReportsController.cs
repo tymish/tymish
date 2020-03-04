@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Tymish.Application.Dtos;
 using Tymish.Application.TimeReports.Commands;
 using Tymish.Application.TimeReports.Query;
 using Tymish.Domain.Entities;
@@ -30,30 +31,28 @@ namespace Tymish.WebApi.Controllers
             return Ok(response);
         }
 
-        [HttpGet(Name="getTimeReportsByIssuedMonth")]
+        [HttpGet(Name="getEmployeeTimeReportAggregates")]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(IList<TimeReport>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> Get([FromQuery] int month, [FromQuery] int year)
+        [ProducesResponseType(typeof(IList<EmployeeTimeReportAggregateDto>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> Get([FromQuery] DateTime month)
         {
             var response = await _mediator
-                .Send(new GetTimeReportsByMonthQuery 
+                .Send(new GetEmployeeTimeReportAggregatesQuery 
                 {
-                    IssuedMonth = month,
-                    IssuedYear = year
+                    IssuedMonth = month
                 });
             return Ok(response);
         }
 
-        [HttpGet("summary", Name="getSummary")]
+        [HttpGet("summary", Name="getMonthAggregate")]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(TimeReportSummary), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetSummary([FromQuery] int month, [FromQuery] int year)
+        [ProducesResponseType(typeof(MonthlyAggregateDto), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetSummary([FromQuery] DateTime month)
         {
             var response = await _mediator
-                .Send(new GetTimeReportSummaryQuery
+                .Send(new GetMonthlyAggregateQuery
                 {
-                    IssuedMonth = month,
-                    IssuedYear = year
+                    IssuedMonth = month
                 });
             return Ok(response);
         }

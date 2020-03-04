@@ -7,48 +7,37 @@ using Tymish.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Collections.Generic;
+using Tymish.Application.Dtos;
 
 namespace Tymish.Application.TimeReports.Query
 {
-    public class GetTimeReportSummaryQuery : IRequest<TimeReportSummary>
+    public class GetMonthlyAggregateQuery : IRequest<MonthlyAggregateDto>
     {
-        public int IssuedMonth { get; set; }
-        public int IssuedYear { get; set; }
+        public DateTime IssuedMonth { get; set; }
     }
 
-    public class TimeReportSummary
-    {
-        public int IssuedMonth { get; set; }
-        public int IssuedYear { get; set; }
-        public int ReportsIssuedCount { get; set; }
-        public int ReportsSubmittedCount { get; set; }
-        public int ReportsPaidCount { get; set; }
-        public decimal AmountOwing { get; set; }
-        public decimal AmountPaid { get; set; }
-    }
-
-    public class GetTimeReportSummaryHandler : IRequestHandler<GetTimeReportSummaryQuery, TimeReportSummary>
+    public class GetMonthlyTimeReportAggregateHandler
+        : IRequestHandler<GetMonthlyAggregateQuery, MonthlyAggregateDto>
     {
         private readonly ITymishDbContext _context;
 
-        public GetTimeReportSummaryHandler(ITymishDbContext context)
+        public GetMonthlyTimeReportAggregateHandler(ITymishDbContext context)
         {
             _context = context;
         }
 
-        public async Task<TimeReportSummary> Handle(GetTimeReportSummaryQuery request, CancellationToken cancellationToken)
+        public async Task<MonthlyAggregateDto> Handle(GetMonthlyAggregateQuery request, CancellationToken cancellationToken)
         {
             var timeReports = await _context.Set<TimeReport>()
                 .Include(e => e.Employee)
                 .Where(e
-                    => e.Issued.Month == request.IssuedMonth
-                    && e.Issued.Year == request.IssuedYear)
+                    => e.Issued.Month == request.IssuedMonth.Month
+                    && e.Issued.Year == request.IssuedMonth.Year)
                 .ToListAsync(cancellationToken);
 
-            var summary = new TimeReportSummary
+            var monthAggregate = new MonthlyAggregateDto
             {
-                IssuedMonth = request.IssuedMonth,
-                IssuedYear = request.IssuedYear,
+                Issued = new DateTime(request.IssuedMonth.Year, request.IssuedMonth.Month, 1),
                 ReportsIssuedCount = timeReports
                     .Where(e => e.Issued != default(DateTime))
                     .Count(),
@@ -64,7 +53,7 @@ namespace Tymish.Application.TimeReports.Query
                 AmountPaid = 0  // TODO
             };
 
-            return summary;
+            return monthAggregate;
         }
 
         public decimal CalculateAmountOwing(Employee employee, IList<TimeEntry> timeEntries)

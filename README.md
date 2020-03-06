@@ -5,6 +5,11 @@ A dotnet core web api with posgres.
 ## Dev Setup
 
 ### 1. Install tools
+#### node 
+```bash
+$ node --version
+v13.7.0
+```
 #### yarn
 ```bash
 $ yarn --version
@@ -38,6 +43,7 @@ $ echo '{
 
 ### 4. Run Entity Framework Migrations
 ```bash
+$ yarn build                              # ...
 $ yarn add-migration <migration-name>     # <migration-name> can be 'init'
 $ yarn update-db                          # updates the database
 ```

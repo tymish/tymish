@@ -74,21 +74,18 @@ namespace Tymish.Persistence
             {
                 new TimeEntry
                 { 
-                    Id = new Guid(),
                     Start = new DateTime(2019, 12, 10, 5, 0, 0),
                     End = new DateTime(2019, 12, 10, 6, 0, 0),
                     Comments = string.Empty
                 },
                 new TimeEntry
                 { 
-                    Id = new Guid(),
                     Start = new DateTime(2019, 12, 17, 5, 0, 0),
                     End = new DateTime(2019, 12, 17, 6, 0, 0),
                     Comments = string.Empty
                 },
                 new TimeEntry
                 { 
-                    Id = new Guid(),
                     Start = new DateTime(2019, 12, 24, 5, 0, 0),
                     End = new DateTime(2019, 12, 24, 6, 0, 0),
                     Comments = string.Empty
@@ -98,21 +95,18 @@ namespace Tymish.Persistence
             {
                 new TimeEntry
                 { 
-                    Id = new Guid(),
                     Start = new DateTime(2020, 1, 10, 5, 0, 0),
                     End = new DateTime(2020, 1, 10, 6, 0, 0),
                     Comments = string.Empty
                 },
                 new TimeEntry
                 { 
-                    Id = new Guid(),
                     Start = new DateTime(2020, 1, 17, 5, 0, 0),
                     End = new DateTime(2020, 1, 17, 6, 0, 0),
                     Comments = string.Empty
                 },
                 new TimeEntry
                 { 
-                    Id = new Guid(),
                     Start = new DateTime(2020, 1, 24, 5, 0, 0),
                     End = new DateTime(2020, 1, 24, 6, 0, 0),
                     Comments = string.Empty
@@ -122,21 +116,18 @@ namespace Tymish.Persistence
             {
                 new TimeEntry()
                 { 
-                    Id = new Guid(),
                     Start = new DateTime(2020, 2, 10, 5, 0, 0),
                     End = new DateTime(2020, 2, 10, 6, 0, 0),
                     Comments = string.Empty
                 },
                 new TimeEntry()
                 { 
-                    Id = new Guid(),
                     Start = new DateTime(2020, 2, 17, 5, 0, 0),
                     End = new DateTime(2020, 2, 17, 6, 0, 0),
                     Comments = string.Empty
                 },
                 new TimeEntry()
                 { 
-                    Id = new Guid(),
                     Start = new DateTime(2020, 2, 24, 5, 0, 0),
                     End = new DateTime(2020, 2, 24, 6, 0, 0),
                     Comments = string.Empty

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Collections.Generic;
 using Tymish.Application.Dtos;
+using Tymish.Application.Exceptions;
 
 namespace Tymish.Application.TimeReports.Query
 {
@@ -16,12 +17,13 @@ namespace Tymish.Application.TimeReports.Query
         public DateTime IssuedMonth { get; set; }
     }
 
-    public class GetTimeReportsByMonthHandler
+    public class GetEmployeeTimeReportAggregatesHandler
         : IRequestHandler<GetEmployeeTimeReportAggregatesQuery, IList<EmployeeTimeReportAggregateDto>>
     {
         private readonly ITymishDbContext _context;
 
-        public GetTimeReportsByMonthHandler(ITymishDbContext context) {
+        public GetEmployeeTimeReportAggregatesHandler(ITymishDbContext context)
+        {
             _context = context;
         }
 
@@ -42,19 +44,26 @@ namespace Tymish.Application.TimeReports.Query
                         && e.Issued.Year == request.IssuedMonth.Year)
                     .SingleOrDefaultAsync(cancellationToken);
 
+                if (timeReport == default(TimeReport))
+                {
+                    // TODO: make this exception better
+                    continue;
+                }
+
                 var aggregate = new EmployeeTimeReportAggregateDto
                 {
+                    TimeReportId = timeReport.Id,
                     Employee = employee,
                     Issued = timeReport.Issued,
                     Submitted = timeReport.Submitted,
                     Paid = timeReport.Paid
                 };
 
-                if (timeReport.TimeEntries == null) 
+                if (timeReport.TimeEntries == null)
                 {
                     aggregate.AmountOwed = 0m;
                 }
-                else 
+                else
                 {
                     aggregate.AmountOwed = timeReport.TimeEntries
                         .Select(x => (x.End - x.Start).Hours)

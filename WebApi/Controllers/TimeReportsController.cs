@@ -60,7 +60,7 @@ namespace Tymish.WebApi.Controllers
         [HttpPut("submit", Name="submitTimeReport")]
         [Produces("application/json")]
         [ProducesResponseType(typeof(TimeReport), StatusCodes.Status200OK)]
-        public async Task<IActionResult> SubmitTimeReport([FromRoute] SubmitTimeReportCommand request)
+        public async Task<IActionResult> SubmitTimeReport([FromBody] SubmitTimeReportCommand request)
         {
             var response = await _mediator.Send(request);
             return Ok(response);

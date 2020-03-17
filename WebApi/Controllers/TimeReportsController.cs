@@ -5,6 +5,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Tymish.Application.Dtos;
+using Tymish.Application.Employees.Queries;
 using Tymish.Application.TimeReports.Commands;
 using Tymish.Application.TimeReports.Query;
 using Tymish.Domain.Entities;
@@ -28,6 +29,16 @@ namespace Tymish.WebApi.Controllers
         public async Task<IActionResult> Get([FromRoute] Guid id)
         {
             var response = await _mediator.Send(new GetTimeReportByIdQuery(id));
+            return Ok(response);
+        }
+
+        [HttpGet("{id:guid}/employee", Name="getEmployeeByTimeReportId")]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(Employee), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetEmployee([FromRoute] Guid id)
+        {
+            var response = await _mediator
+                .Send(new GetEmployeeByTimeReportIdQuery(id));
             return Ok(response);
         }
 

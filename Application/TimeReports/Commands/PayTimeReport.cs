@@ -6,6 +6,7 @@ using MediatR;
 using Tymish.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Tymish.Application.Exceptions;
+using System.ComponentModel.DataAnnotations;
 
 namespace Tymish.Application.TimeReports.Commands
 {
@@ -13,6 +14,8 @@ namespace Tymish.Application.TimeReports.Commands
     {
         /// <summary>TimeReport.Id</summary>
         public Guid Id { get; set; }
+        [Required]
+        public string reference { get; set; }
     }
 
     public class PayTimeReportHandler : IRequestHandler<PayTimeReportCommand, TimeReport>
@@ -35,7 +38,7 @@ namespace Tymish.Application.TimeReports.Commands
                 throw new NotFoundException(nameof(TimeReport), request.Id);
             }
             
-            timeReport.Issued = DateTime.UtcNow;
+            timeReport.Paid = DateTime.UtcNow;
 
             _context.Set<TimeReport>().Update(timeReport);
 

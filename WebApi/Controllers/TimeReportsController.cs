@@ -77,6 +77,15 @@ namespace Tymish.WebApi.Controllers
             return Ok(response);
         }
 
+        [HttpPut("pay", Name="payTimeReport")]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(TimeReport), StatusCodes.Status200OK)]
+        public async Task<IActionResult> PayTimeReport([FromBody] PayTimeReportCommand request)
+        {
+            var response = await _mediator.Send(request);
+            return Ok(response);
+        }
+
         [HttpPost("bulk", Name="createTimeReports")]
         [Produces("application/json")]
         [ProducesResponseType(typeof(Array), StatusCodes.Status202Accepted)]

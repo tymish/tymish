@@ -13,7 +13,7 @@ namespace Tymish.Application.TimeReports.Query
 {
     public class GetMonthlyAggregateQuery : IRequest<MonthlyAggregateDto>
     {
-        public DateTime IssuedMonth { get; set; }
+        public DateTime Sent { get; set; }
     }
 
     public class GetMonthlyTimeReportAggregateHandler
@@ -31,15 +31,15 @@ namespace Tymish.Application.TimeReports.Query
             var timeReports = await _context.Set<TimeReport>()
                 .Include(e => e.Employee)
                 .Where(e
-                    => e.Issued.Month == request.IssuedMonth.Month
-                    && e.Issued.Year == request.IssuedMonth.Year)
+                    => e.Sent.Month == request.Sent.Month
+                    && e.Sent.Year == request.Sent.Year)
                 .ToListAsync(cancellationToken);
 
             var monthAggregate = new MonthlyAggregateDto
             {
-                Issued = new DateTime(request.IssuedMonth.Year, request.IssuedMonth.Month, 1),
-                ReportsIssuedCount = timeReports
-                    .Where(e => e.Issued != default(DateTime))
+                Sent = new DateTime(request.Sent.Year, request.Sent.Month, 1),
+                ReportsSentCount = timeReports
+                    .Where(e => e.Sent != default(DateTime))
                     .Count(),
                 ReportsSubmittedCount = timeReports
                     .Where(e => e.Submitted != default(DateTime))

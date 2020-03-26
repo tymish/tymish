@@ -14,7 +14,7 @@ namespace Tymish.Application.TimeReports.Query
 {
     public class GetEmployeeTimeReportAggregatesQuery : IRequest<IList<EmployeeTimeReportAggregateDto>>
     {
-        public DateTime IssuedMonth { get; set; }
+        public DateTime Sent { get; set; }
     }
 
     public class GetEmployeeTimeReportAggregatesHandler
@@ -40,8 +40,8 @@ namespace Tymish.Application.TimeReports.Query
                     .Set<TimeReport>()
                     .Where(e
                         => e.EmployeeId == employee.Id
-                        && e.Issued.Month == request.IssuedMonth.Month
-                        && e.Issued.Year == request.IssuedMonth.Year)
+                        && e.Sent.Month == request.Sent.Month
+                        && e.Sent.Year == request.Sent.Year)
                     .SingleOrDefaultAsync(cancellationToken);
 
                 if (timeReport == default(TimeReport))
@@ -54,7 +54,7 @@ namespace Tymish.Application.TimeReports.Query
                 {
                     TimeReportId = timeReport.Id,
                     Employee = employee,
-                    Issued = timeReport.Issued,
+                    Sent = timeReport.Sent,
                     Submitted = timeReport.Submitted,
                     Paid = timeReport.Paid
                 };

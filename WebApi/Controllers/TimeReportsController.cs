@@ -50,7 +50,7 @@ namespace Tymish.WebApi.Controllers
             var response = await _mediator
                 .Send(new GetEmployeeTimeReportAggregatesQuery 
                 {
-                    IssuedMonth = month
+                    Sent = month
                 });
             return Ok(response);
         }
@@ -63,7 +63,7 @@ namespace Tymish.WebApi.Controllers
             var response = await _mediator
                 .Send(new GetMonthlyAggregateQuery
                 {
-                    IssuedMonth = month
+                    Sent = month
                 });
             return Ok(response);
         }
@@ -95,9 +95,9 @@ namespace Tymish.WebApi.Controllers
             return Accepted(response);
         }
 
-        [HttpPut("bulk/issued", Name="issueTimeReports")]
+        [HttpPut("sent", Name="sendTimeReports")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> IssueTimeReports([FromBody] IssueTimeReportsCommand request)
+        public async Task<IActionResult> SendTimeReports([FromBody] SendTimeReportsCommand request)
         {
             await _mediator.Send(request);
             return Ok();

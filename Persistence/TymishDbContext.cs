@@ -46,7 +46,7 @@ namespace Tymish.Persistence
             builder.Entity<TimeReport>().HasData(new TimeReport
             {
                 Id = Guid.Parse("5d6e0332-f791-4dad-bb02-269d56b1df57"),
-                Issued = new DateTime(2019, 12, 25),
+                Sent = new DateTime(2019, 12, 25),
                 Submitted = default(DateTime),
                 Paid = default(DateTime),
                 EmployeeId = alice.Id
@@ -55,7 +55,7 @@ namespace Tymish.Persistence
             builder.Entity<TimeReport>().HasData(new TimeReport
             {
                 Id = Guid.Parse("0470ff9a-f359-40a4-a5de-cbbd765c8e7b"),
-                Issued = new DateTime(2020, 1, 25),
+                Sent = new DateTime(2020, 1, 25),
                 Submitted = default(DateTime),
                 Paid = default(DateTime),
                 EmployeeId = alice.Id
@@ -64,7 +64,7 @@ namespace Tymish.Persistence
             builder.Entity<TimeReport>().HasData(new TimeReport
             {
                 Id = Guid.Parse("dfa95a83-3187-4ffb-a6f9-5a8a62d6bf9c"),
-                Issued = new DateTime(2020, 2, 25),
+                Sent = new DateTime(2020, 2, 25),
                 Submitted = default(DateTime),
                 Paid = default(DateTime),
                 EmployeeId = alice.Id
@@ -138,7 +138,7 @@ namespace Tymish.Persistence
             builder.Entity<TimeReport>().HasData(new
             {
                 Id = Guid.Parse("d9e353ca-a2ae-4b86-a60c-07ea19d2e689"),
-                Issued = new DateTime(2019, 12, 25),
+                Sent = new DateTime(2019, 12, 25),
                 Submitted = default(DateTime),
                 Paid = default(DateTime),
                 EmployeeId = bob.Id
@@ -146,7 +146,7 @@ namespace Tymish.Persistence
             builder.Entity<TimeReport>().HasData(new
             {
                 Id = Guid.Parse("28a4410c-710c-4b2e-a950-67d74ebebd87"),
-                Issued = new DateTime(2020, 1, 25),
+                Sent = new DateTime(2020, 1, 25),
                 Submitted = default(DateTime),
                 Paid = default(DateTime),
                 EmployeeId = bob.Id
@@ -154,7 +154,7 @@ namespace Tymish.Persistence
             builder.Entity<TimeReport>().HasData(new
             {
                 Id = Guid.Parse("2423ed81-d924-46d9-a44a-74ff3973ea3e"),
-                Issued = new DateTime(2020, 2, 25),
+                Sent = new DateTime(2020, 2, 25),
                 Submitted = default(DateTime),
                 Paid = default(DateTime),
                 EmployeeId = bob.Id

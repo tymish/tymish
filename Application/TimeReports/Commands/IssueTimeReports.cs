@@ -11,21 +11,21 @@ using System.Linq;
 
 namespace Tymish.Application.TimeReports.Commands
 {
-    public class IssueTimeReportsCommand : IRequest
+    public class SendTimeReportsCommand : IRequest
     {
-        public DateTime Issued { get; set; }
+        public DateTime Sent { get; set; }
     }
 
-    public class IssueTimeReportsHandler : IRequestHandler<IssueTimeReportsCommand, Unit>
+    public class SendTimeReportsHandler : IRequestHandler<SendTimeReportsCommand, Unit>
     {
         private readonly ITymishDbContext _context;
         private readonly IMediator _mediator;
 
-        public IssueTimeReportsHandler(ITymishDbContext context, IMediator mediator) {
+        public SendTimeReportsHandler(ITymishDbContext context, IMediator mediator) {
             _context = context;
             _mediator = mediator;
         }
-        public async Task<Unit> Handle(IssueTimeReportsCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(SendTimeReportsCommand request, CancellationToken cancellationToken)
         {
             var employees = await _context.Set<Employee>()
                 .Include(x => x.TimeReports)
@@ -37,8 +37,8 @@ namespace Tymish.Application.TimeReports.Commands
             {
                 // Check if they have a time report for this month
                 var alreadyHasTimeReportForThisMonth = employee.TimeReports.Any(x
-                    => x.Issued.Month == request.Issued.Month
-                    && x.Issued.Year == request.Issued.Year
+                    => x.Sent.Month == request.Sent.Month
+                    && x.Sent.Year == request.Sent.Year
                 );
 
                 if (alreadyHasTimeReportForThisMonth)
@@ -54,7 +54,7 @@ namespace Tymish.Application.TimeReports.Commands
                 {
                     Id = timeReportId,
                     EmployeeId = employee.Id,
-                    Issued = DateTime.UtcNow
+                    Sent = DateTime.UtcNow
                 });
             }
 

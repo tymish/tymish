@@ -6,7 +6,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Tymish.Application.Exceptions;
 using Tymish.Domain.Entities;
-using Tymish.Domain.Interfaces;
+using Tymish.Application.Interfaces;
 
 namespace Tymish.Application.Employees.Commands
 {

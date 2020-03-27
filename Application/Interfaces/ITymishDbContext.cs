@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
-namespace Tymish.Domain.Interfaces
+namespace Tymish.Application.Interfaces
 {
     public interface ITymishDbContext
     {

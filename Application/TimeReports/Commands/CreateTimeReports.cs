@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Tymish.Domain.Entities;
 using MediatR;
 using System.Collections.Generic;
-using Tymish.Domain.Interfaces;
+using Tymish.Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Tymish.Application.Exceptions;
 using System.Linq;

@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Tymish.Domain.Entities;
 using MediatR;
-using Tymish.Domain.Interfaces;
+using Tymish.Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Tymish.Application.Exceptions;
 using System.Linq;

@@ -2,7 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Tymish.Domain.Entities;
-using Tymish.Domain.Interfaces;
+using Tymish.Application.Interfaces;
 using MediatR;
 using System.ComponentModel.DataAnnotations;
 

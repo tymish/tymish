@@ -11,6 +11,8 @@ using System.Linq;
 
 namespace Tymish.Application.TimeReports.Commands
 {
+    /// <summary>Sends time reports to employees.
+    /// If no time report exists, it creates one.</summary>
     public class SendTimeReportsCommand : IRequest
     {
         public DateTime Sent { get; set; }

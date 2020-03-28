@@ -4,15 +4,14 @@ using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Tymish.Application.Interfaces;
+using Tymish.Gateways;
 using Tymish.Persistence;
 using Tymish.WebApi.Middleware;
 
@@ -41,6 +40,14 @@ namespace WebApi
             services.AddMediatR(Assembly.Load("Application"));
 
             services.AddScoped<ITymishDbContext>(s => s.GetService<TymishDbContext>());
+
+            services.AddScoped<IEmailGateway>(
+                s => { 
+                    var apiKey = Configuration.GetValue<string>("ApiKeys:SendGrid");
+                    return apiKey == string.Empty 
+                        ? new NoEmailGateway() as IEmailGateway
+                        : new SendGridEmailGateway(apiKey) as IEmailGateway;
+                });
 
             services.AddDbContext<TymishDbContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("TymishContext"))

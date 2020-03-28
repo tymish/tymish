@@ -4,6 +4,7 @@
         "start": "dotnet run -p WebApi",
         "build": "dotnet build WebApi",
         "add-migration": "dotnet ef migrations add -p Persistence -s WebApi",
+        "drop-db": "sudo -i -u postgres dropdb Tymish",
         "update-db": "dotnet ef database update -p Persistence -s WebApi"
     }
 }

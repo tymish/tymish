@@ -22,10 +22,16 @@ namespace Tymish.Application.TimeReports.Commands
     {
         private readonly ITymishDbContext _context;
         private readonly IMediator _mediator;
+        private readonly IEmailGateway _email;
 
-        public SendTimeReportsHandler(ITymishDbContext context, IMediator mediator) {
+        public SendTimeReportsHandler(
+            ITymishDbContext context,
+            IMediator mediator,
+            IEmailGateway email)
+        {
             _context = context;
             _mediator = mediator;
+            _email = email;
         }
         public async Task<Unit> Handle(SendTimeReportsCommand request, CancellationToken cancellationToken)
         {
@@ -66,9 +72,8 @@ namespace Tymish.Application.TimeReports.Commands
             foreach(var email in emailList)
             {
                 var address = email.Item1;
-                var timeSheetUrl = ""; // makeUrl(email.Item2);
-                // Send email with link to their most recent 
-                // smptGateway.Send(address, timeSheetUrl);
+                var timeSheetUrl = $"https://localhost:4200/submit-time-report/{email.Item2}";
+                await _email.Send(email.Item1, timeSheetUrl);
             }
 
             return Unit.Value;

@@ -4,6 +4,6 @@ namespace Tymish.Application.Interfaces
 {
     public interface IEmailGateway
     {
-        Task Send(string toEmail, string body);
+        Task Send(string toEmail, string subject, string content);
     }
 }

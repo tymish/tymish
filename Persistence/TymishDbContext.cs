@@ -42,7 +42,7 @@ namespace Tymish.Persistence
             builder.Entity<Employee>().HasData(alice);
             builder.Entity<Employee>().HasData(bob);
 
-            // Alice time sheets
+            // Alice time reports
             builder.Entity<TimeReport>().HasData(new TimeReport
             {
                 Id = Guid.Parse("5d6e0332-f791-4dad-bb02-269d56b1df57"),
@@ -134,7 +134,7 @@ namespace Tymish.Persistence
                 }
             };
             
-            //Bob time sheets
+            //Bob time reports
             builder.Entity<TimeReport>().HasData(new
             {
                 Id = Guid.Parse("d9e353ca-a2ae-4b86-a60c-07ea19d2e689"),

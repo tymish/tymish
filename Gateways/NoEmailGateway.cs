@@ -5,7 +5,7 @@ namespace Tymish.Gateways
 {
     public class NoEmailGateway : IEmailGateway
     {
-        public async Task Send(string toEmail, string body)
+        public async Task Send(string toEmail, string subject, string content)
         {
             // nothing
         }

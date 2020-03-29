@@ -72,8 +72,11 @@ namespace Tymish.Application.TimeReports.Commands
             foreach(var email in emailList)
             {
                 var address = email.Item1;
-                var timeSheetUrl = $"https://localhost:4200/submit-time-report/{email.Item2}";
-                await _email.Send(email.Item1, timeSheetUrl);
+                var timeReportUrl = $"https://localhost:4200/submit-time-report/{email.Item2}";
+                await _email.Send(
+                    email.Item1,
+                    "Submit your time report for {month}",
+                    timeReportUrl);
             }
 
             return Unit.Value;

@@ -21,16 +21,13 @@ namespace Tymish.Application.TimeReports.Commands
     public class SendTimeReportsHandler : IRequestHandler<SendTimeReportsCommand, Unit>
     {
         private readonly ITymishDbContext _context;
-        private readonly IMediator _mediator;
         private readonly IEmailGateway _email;
 
         public SendTimeReportsHandler(
             ITymishDbContext context,
-            IMediator mediator,
             IEmailGateway email)
         {
             _context = context;
-            _mediator = mediator;
             _email = email;
         }
         public async Task<Unit> Handle(SendTimeReportsCommand request, CancellationToken cancellationToken)
@@ -73,10 +70,11 @@ namespace Tymish.Application.TimeReports.Commands
             // Send email to the employees
             foreach(var email in emailList)
             {
-                var address = email.Item1;
+                // send time report message
+                var toEmail = email.Item1;
                 var timeReportUrl = $"https://localhost:4200/submit-time-report/{email.Item2}";
                 await _email.Send(
-                    email.Item1,
+                    toEmail,
                     "Submit your time report for {month}",
                     timeReportUrl);
             }

@@ -43,10 +43,11 @@ namespace WebApi
 
             services.AddScoped<IEmailGateway>(
                 s => { 
+                    var enableEmail = Configuration.GetValue<bool>("EnableEmail");
                     var apiKey = Configuration.GetValue<string>("ApiKeys:SendGrid");
-                    return apiKey == string.Empty 
-                        ? new NoEmailGateway() as IEmailGateway
-                        : new SendGridEmailGateway(apiKey) as IEmailGateway;
+                    return enableEmail && apiKey != string.Empty
+                        ? new SendGridEmailGateway(apiKey) as IEmailGateway
+                        : new NoEmailGateway() as IEmailGateway;
                 });
 
             services.AddDbContext<TymishDbContext>(options =>

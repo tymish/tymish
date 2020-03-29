@@ -31,21 +31,22 @@ namespace Tymish.Application.TimeReports.Query
             var timeReports = await _context.Set<TimeReport>()
                 .Include(e => e.Employee)
                 .Where(e
-                    => e.Sent.Month == request.Sent.Month
-                    && e.Sent.Year == request.Sent.Year)
+                    => e.Sent.HasValue
+                    && e.Sent.Value.Month == request.Sent.Month
+                    && e.Sent.Value.Year == request.Sent.Year)
                 .ToListAsync(cancellationToken);
 
             var monthAggregate = new MonthlyAggregateDto
             {
                 Sent = new DateTime(request.Sent.Year, request.Sent.Month, 1),
                 ReportsSentCount = timeReports
-                    .Where(e => e.Sent != default(DateTime))
+                    .Where(e => e.Sent.HasValue)
                     .Count(),
                 ReportsSubmittedCount = timeReports
-                    .Where(e => e.Submitted != default(DateTime))
+                    .Where(e => e.Submitted.HasValue)
                     .Count(),
                 ReportsPaidCount = timeReports
-                    .Where(e => e.Paid != default(DateTime))
+                    .Where(e => e.Paid.HasValue)
                     .Count(),
                 AmountOwing = timeReports
                     .Select(e=> this.CalculateAmountOwing(e.Employee, e.TimeEntries))

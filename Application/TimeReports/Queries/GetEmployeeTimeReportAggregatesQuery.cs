@@ -40,8 +40,9 @@ namespace Tymish.Application.TimeReports.Query
                     .Set<TimeReport>()
                     .Where(e
                         => e.EmployeeId == employee.Id
-                        && e.Sent.Month == request.Sent.Month
-                        && e.Sent.Year == request.Sent.Year)
+                        && e.Sent.HasValue
+                        && e.Sent.Value.Month == request.Sent.Month
+                        && e.Sent.Value.Year == request.Sent.Year)
                     .SingleOrDefaultAsync(cancellationToken);
 
                 if (timeReport == default(TimeReport))

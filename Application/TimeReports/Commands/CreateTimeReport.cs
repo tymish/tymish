@@ -28,7 +28,7 @@ namespace Tymish.Application.TimeReports.Commands
             var existingTimeReport = await _context.Set<TimeReport>()
                 .FirstOrDefaultAsync(e
                     => e.Employee.EmployeeNumber == request.EmployeeNumber 
-                    && e.Sent == default(DateTime)
+                    && !e.Sent.HasValue
                 );
 
             if (existingTimeReport != default(TimeReport))
@@ -51,9 +51,9 @@ namespace Tymish.Application.TimeReports.Commands
             var entity = new TimeReport
             {
                 Id = Guid.NewGuid(),
-                Sent = default(DateTime),
-                Submitted = default(DateTime),
-                Paid = default(DateTime),
+                Sent = null,
+                Submitted = null,
+                Paid = null,
                 TimeEntries = null,
                 Employee = employee
             };

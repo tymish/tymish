@@ -27,7 +27,7 @@ namespace Tymish.Application.TimeReports.Commands
             var timeReport = await _context.Set<TimeReport>()
                 .SingleOrDefaultAsync(e
                     => e.Employee.EmployeeNumber == request.EmployeeNumber
-                    && e.Sent == default(DateTime),
+                    && !e.Sent.HasValue,
                     cancellationToken
                 );
             

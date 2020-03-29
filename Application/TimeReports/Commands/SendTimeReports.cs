@@ -44,9 +44,11 @@ namespace Tymish.Application.TimeReports.Commands
             foreach(var employee in employees)
             {
                 // Check if they have a time report for this month
-                var alreadyHasTimeReportForThisMonth = employee.TimeReports.Any(x
-                    => x.Sent.Month == request.Sent.Month
-                    && x.Sent.Year == request.Sent.Year
+                var alreadyHasTimeReportForThisMonth = employee.TimeReports
+                    .Any(x
+                    => x.Sent.HasValue
+                    && x.Sent.Value.Month == request.Sent.Month
+                    && x.Sent.Value.Year == request.Sent.Year
                 );
 
                 if (alreadyHasTimeReportForThisMonth)

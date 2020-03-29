@@ -34,7 +34,7 @@ namespace Tymish.Application.Employees.Commands
         {
             var entity = new Employee 
             {
-                Id = new Guid(),
+                Id = Guid.NewGuid(),
                 GivenName = request.GivenName,
                 FamilyName = request.FamilyName,
                 Email = request.Email,

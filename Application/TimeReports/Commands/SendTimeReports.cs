@@ -54,16 +54,16 @@ namespace Tymish.Application.TimeReports.Commands
                     continue; // Skip this employee
                 }
                 
-                var timeReportId = new Guid();
+                var timeReportId = Guid.NewGuid();
 
                 emailList.Add((employee.Email, timeReportId));
 
-                employee.TimeReports.Add(new TimeReport()
+                await _context.Set<TimeReport>().AddAsync(new TimeReport()
                 {
                     Id = timeReportId,
                     EmployeeId = employee.Id,
                     Sent = DateTime.UtcNow
-                });
+                }, cancellationToken);
             }
 
             await _context.SaveChangesAsync(cancellationToken);

@@ -50,7 +50,7 @@ namespace Tymish.Application.TimeReports.Commands
 
             var entity = new TimeReport
             {
-                Id = new Guid(),
+                Id = Guid.NewGuid(),
                 Sent = default(DateTime),
                 Submitted = default(DateTime),
                 Paid = default(DateTime),

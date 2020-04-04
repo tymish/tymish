@@ -57,13 +57,13 @@ namespace Tymish.WebApi.Controllers
 
         [HttpGet("summary", Name="getMonthAggregate")]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(MonthlyAggregateDto), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetSummary([FromQuery] DateTime month)
+        [ProducesResponseType(typeof(IList<MonthAggregateDto>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetSummary([FromQuery] int year)
         {
             var response = await _mediator
-                .Send(new GetMonthlyAggregateQuery
+                .Send(new GetMonthAggregateByYearQuery
                 {
-                    Sent = month
+                    Year = year
                 });
             return Ok(response);
         }

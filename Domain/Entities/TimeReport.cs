@@ -6,6 +6,7 @@ namespace Tymish.Domain.Entities
     public class TimeReport
     {
         public Guid Id { get; set; }
+        public DateTime PayPeriod { get; set; }
         public DateTime? Sent { get; set; }
         public DateTime? Submitted { get; set; }
         public DateTime? Paid { get; set; }

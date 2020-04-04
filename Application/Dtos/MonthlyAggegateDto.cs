@@ -2,13 +2,12 @@ using System;
 
 namespace Tymish.Application.Dtos
 {
-    public class MonthlyAggregateDto
+    public class MonthAggregateDto
     {
-        public DateTime Sent { get; set; }
-        public int ReportsSentCount { get; set; }
-        public int ReportsSubmittedCount { get; set; }
-        public int ReportsPaidCount { get; set; }
-        public decimal AmountOwing { get; set; }
-        public decimal AmountPaid { get; set; }
+        public DateTime PayPeriod { get; set; }
+        public int SentReports { get; set; }
+        public int ReceivedReports { get; set; }
+        public int PaidReports { get; set; }
+        public decimal TotalOwing { get; set; }
     }
 }

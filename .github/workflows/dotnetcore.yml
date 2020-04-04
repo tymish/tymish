@@ -1,4 +1,4 @@
-name: .NET Core
+name: ci
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  build_deploy:
 
     runs-on: ubuntu-latest
 
@@ -21,20 +21,6 @@ jobs:
       run: dotnet restore WebApi
     - name: Build artifact
       run: dotnet publish WebApi --configuration Release --no-restore
-    - uses: actions/upload-artifact@v1
-      with:
-        name: tymish-api
-        path: "WebApi/bin/Release/netcoreapp3.1/publish/"
-   
-  publish:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/download-artifact@v1
-      with:
-        name: tymish-api
-        path: publish
     - name: SCP to Digital Ocean
       uses: appleboy/scp-action@v0.0.7
       env:
@@ -43,7 +29,7 @@ jobs:
         PORT: ${{ secrets.PORT }}
         KEY: ${{ secrets.KEY }}
       with:
-        source: "publish"
+        source: "WebApi/bin/Release/netcoreapp3.1/publish"
         target: "/var/www/tymish-api"
         rm: true
 

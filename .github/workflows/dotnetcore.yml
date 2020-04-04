@@ -30,6 +30,7 @@ jobs:
         KEY: ${{ secrets.KEY }}
       with:
         source: "WebApi/bin/Release/netcoreapp3.1/publish"
+        strip_components: 5
         target: "/var/www/tymish-api"
         rm: true
 

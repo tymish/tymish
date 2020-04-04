@@ -21,28 +21,21 @@ jobs:
       run: dotnet restore WebApi
     - name: Build
       run: dotnet publish WebApi --configuration Release --no-restore
-    # - name: SCP to Digital Ocean
-    #   uses: appleboy/scp-action@v0.0.7
-    #   # env:
-    #   #   HOST: ${{ secrets.HOST }}
-    #   #   USERNAME: ${{ secrets.USERNAME }}
-    #   #   PORT: 22
-    #   #   KEY: ${{ secrets.KEY }}
-    #   with:
-    #     host: ${{ secrets.HOST }}
-    #     username: ${{ secrets.USERNAME }}
-    #     key: ${{ secrets.KEY }}
-    #     port: ${{ secrets.PORT }}
-    #     source: "WebApi/bin/Release/netcoreapp3.1/publish/"
-    #     target: "/var/www/tymish-api"
-    #     rm: true
+   
+  publish:
+
+    runs-on: ubuntu-latest
+
+    steps:
     - name: SCP to Digital Ocean
-      uses: horochx/deploy-via-scp@master
+      uses: appleboy/scp-action@v0.0.7
+      env:
+        HOST: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PORT: ${{ secrets.PORT }}
+        KEY: ${{ secrets.KEY }}
       with:
-        local: "WebApi/bin/Release/netcoreapp3.1/publish/"
-        remote: "/var/www/tymish-api"
-        host: ${{ secrets.HOST }}
-        port: ${{ secrets.PORT }}
-        user: ${{ secrets.USERNAME }}
-        key: ${{ secrets.KEY }}
+        source: "WebApi/bin/Release/netcoreapp3.1/publish/"
+        target: "/var/www/tymish-api"
+        rm: true
 

@@ -8,19 +8,32 @@ on:
 
 jobs:
   build_deploy:
-
     runs-on: ubuntu-latest
 
     steps:
+    - name: Stop the the WebApi
+      uses: appleboy/ssh-action@master
+      env: 
+        HOST: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PORT: ${{ secrets.PORT }}
+        KEY: ${{ secrets.KEY }}
+      with:
+        script: systemctl stop kestrel-tymish-api.service
+
     - uses: actions/checkout@v2
+
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.201
+
     - name: Install dependencies
       run: dotnet restore WebApi
+
     - name: Build artifact
       run: dotnet publish WebApi --configuration Release --no-restore
+
     - name: SCP to Digital Ocean
       uses: appleboy/scp-action@v0.0.7
       env:
@@ -33,4 +46,15 @@ jobs:
         strip_components: 5
         target: "/var/www/tymish-api"
         rm: true
-
+    
+    - name: Start the api
+      uses: appleboy/ssh-action@master
+      env: 
+        HOST: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PORT: ${{ secrets.PORT }}
+        KEY: ${{ secrets.KEY }}
+      with:
+        script: |
+          systemctl start kestrel-tymish-api.service
+          systemctl status kestrel-tymish-api.service

@@ -70,12 +70,6 @@ namespace WebApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            // Nginx to Kestrel
-            app.UseForwardedHeaders(new ForwardedHeadersOptions
-            {
-                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-            });
-
             app.UseCors(options =>
             {
                 options.AllowAnyOrigin();
@@ -86,20 +80,23 @@ namespace WebApi
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(options =>
+                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "Tymish Api V1")
+                );
             }
             else
             {
                 app.UseMiddleware<ExceptionHandler>();
             }
-            // TODO(Hubert): In production move this to IsDevelopment()
-            app.UseSwagger();
-            app.UseSwaggerUI(options =>
-                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Tymish Api V1")
-            );
-
-            app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            // Nginx to Kestrel
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
 
             app.UseAuthorization();
 

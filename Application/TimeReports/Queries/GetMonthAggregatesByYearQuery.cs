@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -41,10 +42,25 @@ namespace Tymish.Application.TimeReports.Query
                     PaidReports = e.Where(report => report.Paid.HasValue).Count(),
                     TotalOwing = SumAmountOwing(e.ToList())
                 })
-                .OrderByDescending(x => x.PayPeriod)
+                .OrderByDescending(e => e.PayPeriod)
                 .ToList();
             
-            return aggregateDtos;
+            // Get months from January to Now
+            var currentYearPastMonths = new List<MonthAggregateDto>();
+            for (var month = 1; month <= DateTime.Today.Month; month++) 
+            {
+                var payPeriod = new DateTime(DateTime.Today.Year, month, 1);
+                
+                var aggregateDto = aggregateDtos.Exists(e => e.PayPeriod == payPeriod)
+                    ? aggregateDtos.Single(e => e.PayPeriod == payPeriod)
+                    : new MonthAggregateDto(payPeriod);
+                
+                currentYearPastMonths.Add(aggregateDto);
+            }
+            
+            return DateTime.Today.Year == request.Year
+                ? currentYearPastMonths.OrderByDescending(e => e.PayPeriod).ToList()
+                : aggregateDtos;
         }
 
         public decimal SumAmountOwing(IList<TimeReport> reports)

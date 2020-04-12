@@ -49,9 +49,10 @@ $ yarn update-db                          # updates the database
 ```
 
 ### 5. Run the WebApi
+We run the api without TLS because we let NGINX do the certificate on testing servers
 ```bash
 $ yarn start
-# https://localhost:5001/swagger
+# http://127.0.0.1:5000/swagger
 ```
 
 ## Snippets for development

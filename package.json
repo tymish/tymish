@@ -1,7 +1,7 @@
 {
     "license": "UNLICENSED",
     "scripts": {
-        "start": "dotnet run -p WebApi",
+        "start": "dotnet run -p WebApi --urls http://127.0.0.1:5000",
         "build": "dotnet build WebApi",
         "dotnet-publish": "dotnet publish WebApi -c Release",
         "gen-sql": "dotnet ef migrations script -p WebApi -o ./Persistence/Scripts/create-db.sql",

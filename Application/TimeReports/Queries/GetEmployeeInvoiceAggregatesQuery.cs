@@ -10,34 +10,34 @@ using System.Collections.Generic;
 using Tymish.Application.Dtos;
 using Tymish.Application.Exceptions;
 
-namespace Tymish.Application.TimeReports.Query
+namespace Tymish.Application.Invoices.Query
 {
-    public class GetEmployeeTimeReportAggregatesQuery : IRequest<IList<EmployeeTimeReportAggregateDto>>
+    public class GetEmployeeInvoiceAggregatesQuery : IRequest<IList<EmployeeInvoiceAggregateDto>>
     {
         public DateTime Sent { get; set; }
     }
 
-    public class GetEmployeeTimeReportAggregatesHandler
-        : IRequestHandler<GetEmployeeTimeReportAggregatesQuery, IList<EmployeeTimeReportAggregateDto>>
+    public class GetEmployeeInvoiceAggregatesHandler
+        : IRequestHandler<GetEmployeeInvoiceAggregatesQuery, IList<EmployeeInvoiceAggregateDto>>
     {
         private readonly ITymishDbContext _context;
 
-        public GetEmployeeTimeReportAggregatesHandler(ITymishDbContext context)
+        public GetEmployeeInvoiceAggregatesHandler(ITymishDbContext context)
         {
             _context = context;
         }
 
-        public async Task<IList<EmployeeTimeReportAggregateDto>> Handle(
-            GetEmployeeTimeReportAggregatesQuery request,
+        public async Task<IList<EmployeeInvoiceAggregateDto>> Handle(
+            GetEmployeeInvoiceAggregatesQuery request,
             CancellationToken cancellationToken)
         {
-            var aggregates = new List<EmployeeTimeReportAggregateDto>();
+            var aggregates = new List<EmployeeInvoiceAggregateDto>();
             var employees = await _context.Set<Employee>().ToListAsync(cancellationToken);
 
             foreach (var employee in employees)
             {
-                var timeReport = await _context
-                    .Set<TimeReport>()
+                var invoice = await _context
+                    .Set<Invoice>()
                     .Where(e
                         => e.EmployeeId == employee.Id
                         && e.Sent.HasValue
@@ -45,28 +45,28 @@ namespace Tymish.Application.TimeReports.Query
                         && e.Sent.Value.Year == request.Sent.Year)
                     .SingleOrDefaultAsync(cancellationToken);
 
-                if (timeReport == default(TimeReport))
+                if (invoice == default(Invoice))
                 {
                     // TODO: make this exception better
                     continue;
                 }
 
-                var aggregate = new EmployeeTimeReportAggregateDto
+                var aggregate = new EmployeeInvoiceAggregateDto
                 {
-                    TimeReportId = timeReport.Id,
+                    InvoiceId = invoice.Id,
                     Employee = employee,
-                    Sent = timeReport.Sent,
-                    Submitted = timeReport.Submitted,
-                    Paid = timeReport.Paid
+                    Sent = invoice.Sent,
+                    Submitted = invoice.Submitted,
+                    Paid = invoice.Paid
                 };
 
-                if (timeReport.TimeEntries == null)
+                if (invoice.TimeEntries == null)
                 {
                     aggregate.AmountOwed = 0m;
                 }
                 else
                 {
-                    aggregate.AmountOwed = timeReport.TimeEntries
+                    aggregate.AmountOwed = invoice.TimeEntries
                         .Select(x => (x.End - x.Start).Hours)
                         .Sum() * employee.HourlyPay;
                 }

@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using MediatR;
@@ -7,9 +8,7 @@ using Microsoft.Extensions.Logging;
 using Tymish.Domain.Entities;
 using Tymish.Application.Employees.Commands;
 using Tymish.Application.Employees.Queries;
-using System;
-using Tymish.Application.TimeReports.Commands;
-using Tymish.Application.TimeReports.Query;
+using Tymish.Application.Invoices.Query;
 
 namespace Tymish.WebApi.Controllers
 {
@@ -53,10 +52,10 @@ namespace Tymish.WebApi.Controllers
             return Ok(response);
         }
 
-        [HttpGet("{number:int}/time-reports", Name="getTimeReportsForEmployee")]
-        public async Task<IActionResult> GetTimeReportsForEmployee([FromRoute] int number)
+        [HttpGet("{number:int}/invoices", Name="getInvoicesForEmployee")]
+        public async Task<IActionResult> GetInvoicesForEmployee([FromRoute] int number)
         {
-            var request = new GetTimeReportsByEmployeeNumberQuery
+            var request = new GetInvoicesByEmployeeNumberQuery
             {
                 EmployeeNumber = number
             };

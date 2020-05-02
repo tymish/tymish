@@ -15,7 +15,7 @@ CREATE TABLE "Employees" (
     CONSTRAINT "AK_Employees_EmployeeNumber" UNIQUE ("EmployeeNumber")
 );
 
-CREATE TABLE "TimeReports" (
+CREATE TABLE "Invoices" (
     "Id" uuid NOT NULL,
     "PayPeriod" timestamp without time zone NOT NULL,
     "Sent" timestamp without time zone NULL,
@@ -23,8 +23,8 @@ CREATE TABLE "TimeReports" (
     "Paid" timestamp without time zone NULL,
     "TimeEntries" jsonb NULL,
     "EmployeeId" uuid NOT NULL,
-    CONSTRAINT "PK_TimeReports" PRIMARY KEY ("Id"),
-    CONSTRAINT "FK_TimeReports_Employees_EmployeeId" FOREIGN KEY ("EmployeeId") REFERENCES "Employees" ("Id") ON DELETE CASCADE
+    CONSTRAINT "PK_Invoices" PRIMARY KEY ("Id"),
+    CONSTRAINT "FK_Invoices_Employees_EmployeeId" FOREIGN KEY ("EmployeeId") REFERENCES "Employees" ("Id") ON DELETE CASCADE
 );
 
 INSERT INTO "Employees" ("Id", "Email", "EmployeeNumber", "FamilyName", "GivenName", "HourlyPay")
@@ -32,21 +32,21 @@ VALUES ('9c86216f-6422-47ba-b158-bdac76805c0a', 'alice.zuberg@gmail.com', 1, 'Zu
 INSERT INTO "Employees" ("Id", "Email", "EmployeeNumber", "FamilyName", "GivenName", "HourlyPay")
 VALUES ('3f289a60-366f-4316-b6f2-e68e811f8b05', 'bob.mcphearson@gmail.com', 2, 'McPhearson', 'Bob', 20.0);
 
-INSERT INTO "TimeReports" ("Id", "EmployeeId", "Paid", "PayPeriod", "Sent", "Submitted", "TimeEntries")
+INSERT INTO "Invoices" ("Id", "EmployeeId", "Paid", "PayPeriod", "Sent", "Submitted", "TimeEntries")
 VALUES ('5d6e0332-f791-4dad-bb02-269d56b1df57', '9c86216f-6422-47ba-b158-bdac76805c0a', NULL, TIMESTAMP '2019-12-01 00:00:00', TIMESTAMP '2019-12-25 00:00:00', NULL, NULL);
-INSERT INTO "TimeReports" ("Id", "EmployeeId", "Paid", "PayPeriod", "Sent", "Submitted", "TimeEntries")
+INSERT INTO "Invoices" ("Id", "EmployeeId", "Paid", "PayPeriod", "Sent", "Submitted", "TimeEntries")
 VALUES ('0470ff9a-f359-40a4-a5de-cbbd765c8e7b', '9c86216f-6422-47ba-b158-bdac76805c0a', NULL, TIMESTAMP '2020-01-01 00:00:00', TIMESTAMP '2020-01-25 00:00:00', NULL, NULL);
-INSERT INTO "TimeReports" ("Id", "EmployeeId", "Paid", "PayPeriod", "Sent", "Submitted", "TimeEntries")
+INSERT INTO "Invoices" ("Id", "EmployeeId", "Paid", "PayPeriod", "Sent", "Submitted", "TimeEntries")
 VALUES ('dfa95a83-3187-4ffb-a6f9-5a8a62d6bf9c', '9c86216f-6422-47ba-b158-bdac76805c0a', NULL, TIMESTAMP '2020-02-01 00:00:00', TIMESTAMP '2020-02-25 00:00:00', NULL, NULL);
-INSERT INTO "TimeReports" ("Id", "EmployeeId", "Paid", "PayPeriod", "Sent", "Submitted", "TimeEntries")
+INSERT INTO "Invoices" ("Id", "EmployeeId", "Paid", "PayPeriod", "Sent", "Submitted", "TimeEntries")
 VALUES ('d9e353ca-a2ae-4b86-a60c-07ea19d2e689', '3f289a60-366f-4316-b6f2-e68e811f8b05', NULL, TIMESTAMP '2019-12-01 00:00:00', TIMESTAMP '2019-12-25 00:00:00', NULL, NULL);
-INSERT INTO "TimeReports" ("Id", "EmployeeId", "Paid", "PayPeriod", "Sent", "Submitted", "TimeEntries")
+INSERT INTO "Invoices" ("Id", "EmployeeId", "Paid", "PayPeriod", "Sent", "Submitted", "TimeEntries")
 VALUES ('28a4410c-710c-4b2e-a950-67d74ebebd87', '3f289a60-366f-4316-b6f2-e68e811f8b05', NULL, TIMESTAMP '2020-01-01 00:00:00', TIMESTAMP '2020-01-25 00:00:00', NULL, NULL);
-INSERT INTO "TimeReports" ("Id", "EmployeeId", "Paid", "PayPeriod", "Sent", "Submitted", "TimeEntries")
+INSERT INTO "Invoices" ("Id", "EmployeeId", "Paid", "PayPeriod", "Sent", "Submitted", "TimeEntries")
 VALUES ('2423ed81-d924-46d9-a44a-74ff3973ea3e', '3f289a60-366f-4316-b6f2-e68e811f8b05', NULL, TIMESTAMP '2020-02-01 00:00:00', TIMESTAMP '2020-02-25 00:00:00', NULL, NULL);
 
-CREATE INDEX "IX_TimeReports_EmployeeId" ON "TimeReports" ("EmployeeId");
+CREATE INDEX "IX_Invoices_EmployeeId" ON "Invoices" ("EmployeeId");
 
 INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
-VALUES ('20200404022613_init', '3.1.2');
+VALUES ('20200502220450_init', '3.1.2');
 

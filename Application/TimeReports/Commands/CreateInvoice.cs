@@ -8,33 +8,33 @@ using Tymish.Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Tymish.Application.Exceptions;
 
-namespace Tymish.Application.TimeReports.Commands
+namespace Tymish.Application.Invoices.Commands
 {
-    public class CreateTimeReportCommand : IRequest<TimeReport>
+    public class CreateInvoiceCommand : IRequest<Invoice>
     {
         public int EmployeeNumber { get; set; }
     }
 
-    public class CreateTimeReportHandler : IRequestHandler<CreateTimeReportCommand, TimeReport>
+    public class CreateInvoiceHandler : IRequestHandler<CreateInvoiceCommand, Invoice>
     {
         private readonly ITymishDbContext _context;
 
-        public CreateTimeReportHandler(ITymishDbContext context) {
+        public CreateInvoiceHandler(ITymishDbContext context) {
             _context = context;
         }
-        public async Task<TimeReport> Handle(CreateTimeReportCommand request, CancellationToken cancellationToken)
+        public async Task<Invoice> Handle(CreateInvoiceCommand request, CancellationToken cancellationToken)
         {
-            // check for not-sent time reports before creating
-            var existingTimeReport = await _context.Set<TimeReport>()
+            // check for not-sent time invoices before creating
+            var existingInvoice = await _context.Set<Invoice>()
                 .FirstOrDefaultAsync(e
                     => e.Employee.EmployeeNumber == request.EmployeeNumber 
                     && !e.Sent.HasValue
                 );
 
-            if (existingTimeReport != default(TimeReport))
+            if (existingInvoice != default(Invoice))
             {
-                var reason = $"time report without sent date still exists for employee ({request.EmployeeNumber})";
-                throw new CannotCreateException(nameof(TimeReport), reason);
+                var reason = $"time invoice without sent date still exists for employee ({request.EmployeeNumber})";
+                throw new CannotCreateException(nameof(Invoice), reason);
             }
 
             var employee = await _context
@@ -48,7 +48,7 @@ namespace Tymish.Application.TimeReports.Commands
                 throw new NotFoundException(nameof(Employee), request.EmployeeNumber);
             }
 
-            var entity = new TimeReport
+            var entity = new Invoice
             {
                 Id = Guid.NewGuid(),
                 Sent = null,
@@ -58,7 +58,7 @@ namespace Tymish.Application.TimeReports.Commands
                 Employee = employee
             };
 
-            await _context.Set<TimeReport>().AddAsync(entity);
+            await _context.Set<Invoice>().AddAsync(entity);
 
             await _context.SaveChangesAsync(cancellationToken);
             

@@ -9,7 +9,7 @@ using Tymish.Application.Dtos;
 using Tymish.Application.Interfaces;
 using Tymish.Domain.Entities;
 
-namespace Tymish.Application.TimeReports.Query
+namespace Tymish.Application.Invoices.Query
 {
     public class GetMonthAggregateByYearQuery : IRequest<IList<MonthAggregateDto>>
     {
@@ -27,19 +27,19 @@ namespace Tymish.Application.TimeReports.Query
         }
         public async Task<IList<MonthAggregateDto>> Handle(GetMonthAggregateByYearQuery request, CancellationToken cancellationToken)
         {
-            var timeReports = await _context.Set<TimeReport>()
+            var invoices = await _context.Set<Invoice>()
                 .Where(e => e.PayPeriod.Year == request.Year)
                 .Include(e => e.Employee)
                 .ToListAsync(cancellationToken);
 
-            var aggregateDtos = timeReports
+            var aggregateDtos = invoices
                 .GroupBy(e => e.PayPeriod)
                 .Select(e => new MonthAggregateDto
                 {
                     PayPeriod = e.Key,
-                    SentReports = e.Where(report => report.Sent.HasValue).Count(), 
-                    ReceivedReports = e.Where(report => report.Submitted.HasValue).Count(),
-                    PaidReports = e.Where(report => report.Paid.HasValue).Count(),
+                    SentInvoices = e.Where(invoice => invoice.Sent.HasValue).Count(), 
+                    ReceivedInvoices = e.Where(invoice => invoice.Submitted.HasValue).Count(),
+                    PaidInvoices = e.Where(invoice => invoice.Paid.HasValue).Count(),
                     TotalOwing = SumAmountOwing(e.ToList())
                 })
                 .OrderByDescending(e => e.PayPeriod)
@@ -63,10 +63,10 @@ namespace Tymish.Application.TimeReports.Query
                 : aggregateDtos;
         }
 
-        public decimal SumAmountOwing(IList<TimeReport> reports)
+        public decimal SumAmountOwing(IList<Invoice> invoices)
         {
-            if (reports == null) return 0M;
-            return reports.Sum(e => SumTimeEntryHours(e.TimeEntries) * e.Employee.HourlyPay);
+            if (invoices == null) return 0M;
+            return invoices.Sum(e => SumTimeEntryHours(e.TimeEntries) * e.Employee.HourlyPay);
         }
 
         public decimal SumTimeEntryHours(IList<TimeEntry> entries)

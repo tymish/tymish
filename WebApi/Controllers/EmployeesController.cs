@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using MediatR;
@@ -7,8 +8,6 @@ using Microsoft.Extensions.Logging;
 using Tymish.Domain.Entities;
 using Tymish.Application.Employees.Commands;
 using Tymish.Application.Employees.Queries;
-using System;
-using Tymish.Application.Invoices.Commands;
 using Tymish.Application.Invoices.Query;
 
 namespace Tymish.WebApi.Controllers

@@ -8,43 +8,43 @@ using Microsoft.EntityFrameworkCore;
 using Tymish.Application.Exceptions;
 using System.ComponentModel.DataAnnotations;
 
-namespace Tymish.Application.TimeReports.Commands
+namespace Tymish.Application.Invoices.Commands
 {
-    public class PayTimeReportCommand : IRequest<TimeReport>
+    public class PayInvoiceCommand : IRequest<Invoice>
     {
-        /// <summary>TimeReport.Id</summary>
+        /// <summary>Invoice.Id</summary>
         public Guid Id { get; set; }
         [Required]
         public string reference { get; set; }
     }
 
-    public class PayTimeReportHandler : IRequestHandler<PayTimeReportCommand, TimeReport>
+    public class PayInvoiceHandler : IRequestHandler<PayInvoiceCommand, Invoice>
     {
         private readonly ITymishDbContext _context;
 
-        public PayTimeReportHandler(ITymishDbContext context) {
+        public PayInvoiceHandler(ITymishDbContext context) {
             _context = context;
         }
-        public async Task<TimeReport> Handle(PayTimeReportCommand request, CancellationToken cancellationToken)
+        public async Task<Invoice> Handle(PayInvoiceCommand request, CancellationToken cancellationToken)
         {
-            var timeReport = await _context.Set<TimeReport>()
+            var invoice = await _context.Set<Invoice>()
                 .SingleOrDefaultAsync(
                     e => e.Id == request.Id,
                     cancellationToken
                 );
             
-            if (timeReport == default(TimeReport))
+            if (invoice == default(Invoice))
             {
-                throw new NotFoundException(nameof(TimeReport), request.Id);
+                throw new NotFoundException(nameof(Invoice), request.Id);
             }
             
-            timeReport.Paid = DateTime.UtcNow;
+            invoice.Paid = DateTime.UtcNow;
 
-            _context.Set<TimeReport>().Update(timeReport);
+            _context.Set<Invoice>().Update(invoice);
 
             await _context.SaveChangesAsync(cancellationToken);
 
-            return timeReport;
+            return invoice;
         }
     }
 }

@@ -6,49 +6,49 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Tymish.Application.Dtos;
 using Tymish.Application.Employees.Queries;
-using Tymish.Application.TimeReports.Commands;
-using Tymish.Application.TimeReports.Query;
+using Tymish.Application.Invoices.Commands;
+using Tymish.Application.Invoices.Query;
 using Tymish.Domain.Entities;
 
 namespace Tymish.WebApi.Controllers
 {
     [ApiController]
-    [Route("time-reports")]
-    public class TimeReportsController : ControllerBase
+    [Route("invoices")]
+    public class InvoicesController : ControllerBase
     {
         private readonly IMediator _mediator;
 
-        public TimeReportsController(IMediator mediator)
+        public InvoicesController(IMediator mediator)
         {
             _mediator = mediator;
         }
 
-        [HttpGet("{id:guid}", Name="getTimeReportById")]
+        [HttpGet("{id:guid}", Name="getInvoiceById")]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(TimeReport), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Invoice), StatusCodes.Status200OK)]
         public async Task<IActionResult> Get([FromRoute] Guid id)
         {
-            var response = await _mediator.Send(new GetTimeReportByIdQuery(id));
+            var response = await _mediator.Send(new GetInvoiceByIdQuery(id));
             return Ok(response);
         }
 
-        [HttpGet("{id:guid}/employee", Name="getEmployeeByTimeReportId")]
+        [HttpGet("{id:guid}/employee", Name="getEmployeeByInvoiceId")]
         [Produces("application/json")]
         [ProducesResponseType(typeof(Employee), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetEmployee([FromRoute] Guid id)
         {
             var response = await _mediator
-                .Send(new GetEmployeeByTimeReportIdQuery(id));
+                .Send(new GetEmployeeByInvoiceIdQuery(id));
             return Ok(response);
         }
 
-        [HttpGet(Name="getEmployeeTimeReportAggregates")]
+        [HttpGet(Name="getEmployeeInvoiceAggregates")]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(IList<EmployeeTimeReportAggregateDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IList<EmployeeInvoiceAggregateDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> Get([FromQuery] DateTime month)
         {
             var response = await _mediator
-                .Send(new GetEmployeeTimeReportAggregatesQuery 
+                .Send(new GetEmployeeInvoiceAggregatesQuery 
                 {
                     Sent = month
                 });
@@ -68,38 +68,38 @@ namespace Tymish.WebApi.Controllers
             return Ok(response);
         }
 
-        [HttpPut("submit", Name="submitTimeReport")]
+        [HttpPut("submit", Name="submitInvoice")]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(TimeReport), StatusCodes.Status200OK)]
-        public async Task<IActionResult> SubmitTimeReport([FromBody] SubmitTimeReportCommand request)
+        [ProducesResponseType(typeof(Invoice), StatusCodes.Status200OK)]
+        public async Task<IActionResult> SubmitInvoice([FromBody] SubmitInvoiceCommand request)
         {
             var response = await _mediator.Send(request);
             return Ok(response);
         }
 
-        [HttpPut("pay", Name="payTimeReport")]
+        [HttpPut("pay", Name="payInvoice")]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(TimeReport), StatusCodes.Status200OK)]
-        public async Task<IActionResult> PayTimeReport([FromBody] PayTimeReportCommand request)
+        [ProducesResponseType(typeof(Invoice), StatusCodes.Status200OK)]
+        public async Task<IActionResult> PayInvoice([FromBody] PayInvoiceCommand request)
         {
             var response = await _mediator.Send(request);
             return Ok(response);
         }
 
-        [HttpPut("sent", Name="sendTimeReports")]
+        [HttpPut("sent", Name="sendInvoices")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> SendTimeReports([FromBody] SendTimeReportsCommand request)
+        public async Task<IActionResult> SendInvoices([FromBody] SendInvoicesCommand request)
         {
             await _mediator.Send(request);
             return Ok();
         }
 
-        [HttpPut("{id:guid}/sent", Name="sendTimeReport")]
+        [HttpPut("{id:guid}/sent", Name="sendInvoice")]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(TimeReport), StatusCodes.Status200OK)]
-        public async Task<IActionResult> SendTimeReport([FromRoute] Guid timeReportId)
+        [ProducesResponseType(typeof(Invoice), StatusCodes.Status200OK)]
+        public async Task<IActionResult> SendInvoice([FromRoute] Guid invoiceId)
         {
-            var response = await _mediator.Send(new SendTimeReportCommand{TimeReportId = timeReportId});
+            var response = await _mediator.Send(new SendInvoiceCommand{InvoiceId = invoiceId});
             return Ok(response);
         }
     }

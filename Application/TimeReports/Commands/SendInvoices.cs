@@ -9,57 +9,57 @@ using Microsoft.EntityFrameworkCore;
 using Tymish.Application.Exceptions;
 using System.Linq;
 
-namespace Tymish.Application.TimeReports.Commands
+namespace Tymish.Application.Invoices.Commands
 {
-    /// <summary>Sends time reports to employees.
-    /// If no time report exists, it creates one.</summary>
-    public class SendTimeReportsCommand : IRequest
+    /// <summary>Sends invoices to employees.
+    /// If no invoice exists, it creates one.</summary>
+    public class SendInvoicesCommand : IRequest
     {
         public DateTime Sent { get; set; }
     }
 
-    public class SendTimeReportsHandler : IRequestHandler<SendTimeReportsCommand, Unit>
+    public class SendInvoicesHandler : IRequestHandler<SendInvoicesCommand, Unit>
     {
         private readonly ITymishDbContext _context;
         private readonly IEmailGateway _email;
 
-        public SendTimeReportsHandler(
+        public SendInvoicesHandler(
             ITymishDbContext context,
             IEmailGateway email)
         {
             _context = context;
             _email = email;
         }
-        public async Task<Unit> Handle(SendTimeReportsCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(SendInvoicesCommand request, CancellationToken cancellationToken)
         {
             var employees = await _context.Set<Employee>()
-                .Include(x => x.TimeReports)
+                .Include(x => x.Invoices)
                 .ToListAsync(cancellationToken);
 
             var emailList = new List<(string, Guid)>();
 
             foreach(var employee in employees)
             {
-                // Check if they have a time report for this month
-                var alreadyHasTimeReportForThisMonth = employee.TimeReports
+                // Check if they have a invoice for this month
+                var alreadyHasInvoiceForThisMonth = employee.Invoices
                     .Any(x
                     => x.Sent.HasValue
                     && x.Sent.Value.Month == request.Sent.Month
                     && x.Sent.Value.Year == request.Sent.Year
                 );
 
-                if (alreadyHasTimeReportForThisMonth)
+                if (alreadyHasInvoiceForThisMonth)
                 {
                     continue; // Skip this employee
                 }
                 
-                var timeReportId = Guid.NewGuid();
+                var invoiceId = Guid.NewGuid();
 
-                emailList.Add((employee.Email, timeReportId));
+                emailList.Add((employee.Email, invoiceId));
 
-                await _context.Set<TimeReport>().AddAsync(new TimeReport()
+                await _context.Set<Invoice>().AddAsync(new Invoice()
                 {
-                    Id = timeReportId,
+                    Id = invoiceId,
                     EmployeeId = employee.Id,
                     Sent = DateTime.UtcNow
                 }, cancellationToken);
@@ -70,13 +70,13 @@ namespace Tymish.Application.TimeReports.Commands
             // Send email to the employees
             foreach(var email in emailList)
             {
-                // send time report message
+                // send invoice message
                 var toEmail = email.Item1;
-                var timeReportUrl = $"https://localhost:4200/submit-time-report/{email.Item2}";
+                var invoiceUrl = $"https://localhost:4200/submit-invoice/{email.Item2}";
                 await _email.Send(
                     toEmail,
-                    "Submit your time report for {month}",
-                    timeReportUrl);
+                    "Submit your invoice for {month}",
+                    invoiceUrl);
             }
 
             return Unit.Value;

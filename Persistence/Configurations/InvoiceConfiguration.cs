@@ -4,9 +4,9 @@ using Tymish.Domain.Entities;
 
 namespace Tymish.Persistence.Configurations
 {
-    public class TimeReportConfiguration : IEntityTypeConfiguration<TimeReport>
+    public class InvoiceConfiguration : IEntityTypeConfiguration<Invoice>
     {
-        public void Configure(EntityTypeBuilder<TimeReport> builder)
+        public void Configure(EntityTypeBuilder<Invoice> builder)
         {
             builder.Property(e => e.TimeEntries)
                 .HasColumnType("jsonb");

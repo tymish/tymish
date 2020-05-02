@@ -13,7 +13,7 @@ namespace Tymish.Persistence
             : base(options) { }
 
         public DbSet<Employee> Employees { get; set; }
-        public DbSet<TimeReport> TimeReports { get; set; }
+        public DbSet<Invoice> Invoices { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -42,8 +42,8 @@ namespace Tymish.Persistence
             builder.Entity<Employee>().HasData(alice);
             builder.Entity<Employee>().HasData(bob);
 
-            // Alice time reports
-            builder.Entity<TimeReport>().HasData(new TimeReport
+            // Alice invoices
+            builder.Entity<Invoice>().HasData(new Invoice
             {
                 Id = Guid.Parse("5d6e0332-f791-4dad-bb02-269d56b1df57"),
                 PayPeriod = new DateTime(2019, 12, 1),
@@ -51,7 +51,7 @@ namespace Tymish.Persistence
                 EmployeeId = alice.Id
             });
 
-            builder.Entity<TimeReport>().HasData(new TimeReport
+            builder.Entity<Invoice>().HasData(new Invoice
             {
                 Id = Guid.Parse("0470ff9a-f359-40a4-a5de-cbbd765c8e7b"),
                 PayPeriod = new DateTime(2020, 1, 1),
@@ -59,7 +59,7 @@ namespace Tymish.Persistence
                 EmployeeId = alice.Id
             });
 
-            builder.Entity<TimeReport>().HasData(new TimeReport
+            builder.Entity<Invoice>().HasData(new Invoice
             {
                 Id = Guid.Parse("dfa95a83-3187-4ffb-a6f9-5a8a62d6bf9c"),
                 PayPeriod = new DateTime(2020, 2, 1),
@@ -131,22 +131,22 @@ namespace Tymish.Persistence
                 }
             };
             
-            //Bob time reports
-            builder.Entity<TimeReport>().HasData(new
+            //Bob invoices
+            builder.Entity<Invoice>().HasData(new
             {
                 Id = Guid.Parse("d9e353ca-a2ae-4b86-a60c-07ea19d2e689"),
                 PayPeriod = new DateTime(2019, 12, 1),
                 Sent = new DateTime(2019, 12, 25),
                 EmployeeId = bob.Id
             });
-            builder.Entity<TimeReport>().HasData(new
+            builder.Entity<Invoice>().HasData(new
             {
                 Id = Guid.Parse("28a4410c-710c-4b2e-a950-67d74ebebd87"),
                 PayPeriod = new DateTime(2020, 1, 1),
                 Sent = new DateTime(2020, 1, 25),
                 EmployeeId = bob.Id
             });
-            builder.Entity<TimeReport>().HasData(new
+            builder.Entity<Invoice>().HasData(new
             {
                 Id = Guid.Parse("2423ed81-d924-46d9-a44a-74ff3973ea3e"),
                 PayPeriod = new DateTime(2020, 2, 1),

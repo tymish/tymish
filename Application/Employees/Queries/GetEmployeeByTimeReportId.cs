@@ -9,34 +9,34 @@ using Tymish.Application.Interfaces;
 
 namespace Tymish.Application.Employees.Queries
 {
-    public class GetEmployeeByTimeReportIdQuery : IRequest<Employee>
+    public class GetEmployeeByInvoiceIdQuery : IRequest<Employee>
     {
-        public GetEmployeeByTimeReportIdQuery(Guid id)
+        public GetEmployeeByInvoiceIdQuery(Guid id)
         {
-            TimeReportId = id;
+            InvoiceId = id;
         }
-        public Guid TimeReportId { get; set; }
+        public Guid InvoiceId { get; set; }
     }
-    public class GetEmployeeByTimeReportIdHandler : IRequestHandler<GetEmployeeByTimeReportIdQuery, Employee>
+    public class GetEmployeeByInvoiceIdHandler : IRequestHandler<GetEmployeeByInvoiceIdQuery, Employee>
     {
         private readonly ITymishDbContext _context;
-        public GetEmployeeByTimeReportIdHandler(ITymishDbContext context)
+        public GetEmployeeByInvoiceIdHandler(ITymishDbContext context)
         {
             _context = context;
         }
 
-        public async Task<Employee> Handle(GetEmployeeByTimeReportIdQuery request, CancellationToken cancellationToken)
+        public async Task<Employee> Handle(GetEmployeeByInvoiceIdQuery request, CancellationToken cancellationToken)
         {
-            var entity = await _context.Set<TimeReport>()
+            var entity = await _context.Set<Invoice>()
                 .Include(e => e.Employee)
                 .SingleOrDefaultAsync(
-                    e => e.Id == request.TimeReportId,
+                    e => e.Id == request.InvoiceId,
                     cancellationToken
                 );
 
             if (entity.Employee == default(Employee))
             {
-                throw new NotFoundException(nameof(Employee), request.TimeReportId);
+                throw new NotFoundException(nameof(Employee), request.InvoiceId);
             }
 
             return entity.Employee;

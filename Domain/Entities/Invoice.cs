@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Tymish.Domain.Entities
 {
-    public class TimeReport
+    public class Invoice
     {
         public Guid Id { get; set; }
         public DateTime PayPeriod { get; set; }

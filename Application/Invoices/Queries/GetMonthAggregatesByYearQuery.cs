@@ -37,7 +37,7 @@ namespace Tymish.Application.Invoices.Query
                 .Select(e => new MonthAggregateDto
                 {
                     PayPeriod = e.Key,
-                    SentInvoices = e.Where(invoice => invoice.Sent.HasValue).Count(), 
+                    //SentInvoices = e.Where(invoice => invoice.Created).Count(), 
                     ReceivedInvoices = e.Where(invoice => invoice.Submitted.HasValue).Count(),
                     PaidInvoices = e.Where(invoice => invoice.Paid.HasValue).Count(),
                     TotalOwing = SumAmountOwing(e.ToList())

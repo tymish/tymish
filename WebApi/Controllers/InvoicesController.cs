@@ -86,14 +86,6 @@ namespace Tymish.WebApi.Controllers
             return Ok(response);
         }
 
-        [HttpPut("sent", Name="sendInvoices")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> SendInvoices([FromBody] SendInvoicesCommand request)
-        {
-            await _mediator.Send(request);
-            return Ok();
-        }
-
         [HttpPut("{id:guid}/sent", Name="sendInvoice")]
         [Produces("application/json")]
         [ProducesResponseType(typeof(Invoice), StatusCodes.Status200OK)]

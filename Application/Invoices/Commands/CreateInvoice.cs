@@ -24,19 +24,6 @@ namespace Tymish.Application.Invoices.Commands
         }
         public async Task<Invoice> Handle(CreateInvoiceCommand request, CancellationToken cancellationToken)
         {
-            // check for not-sent time invoices before creating
-            var existingInvoice = await _context.Set<Invoice>()
-                .FirstOrDefaultAsync(e
-                    => e.Employee.EmployeeNumber == request.EmployeeNumber 
-                    && !e.Sent.HasValue
-                );
-
-            if (existingInvoice != default(Invoice))
-            {
-                var reason = $"time invoice without sent date still exists for employee ({request.EmployeeNumber})";
-                throw new CannotCreateException(nameof(Invoice), reason);
-            }
-
             var employee = await _context
                 .Set<Employee>().SingleOrDefaultAsync(
                     e => e.EmployeeNumber == request.EmployeeNumber,
@@ -51,7 +38,7 @@ namespace Tymish.Application.Invoices.Commands
             var entity = new Invoice
             {
                 Id = Guid.NewGuid(),
-                Sent = null,
+                Created = DateTime.UtcNow,
                 Submitted = null,
                 Paid = null,
                 TimeEntries = null,

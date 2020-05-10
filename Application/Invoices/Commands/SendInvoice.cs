@@ -38,10 +38,6 @@ namespace Tymish.Application.Invoices.Commands
                 throw new NotFoundException(nameof(Invoice), request.InvoiceId);
             }
 
-            invoice.Sent = DateTime.UtcNow;
-
-            _context.Set<Invoice>().Update(invoice);
-
             await Task.WhenAll(
                 _context.SaveChangesAsync(cancellationToken),
                 _email.Send(

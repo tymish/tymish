@@ -14,6 +14,7 @@ namespace Tymish.Persistence
 
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Invoice> Invoices { get; set; }
+        public DbSet<Vendor> Vendors { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -47,7 +48,7 @@ namespace Tymish.Persistence
             {
                 Id = Guid.Parse("5d6e0332-f791-4dad-bb02-269d56b1df57"),
                 PayPeriod = new DateTime(2019, 12, 1),
-                Sent = new DateTime(2019, 12, 25),
+                Created = new DateTime(2019, 12, 25),
                 EmployeeId = alice.Id
             });
 
@@ -55,7 +56,7 @@ namespace Tymish.Persistence
             {
                 Id = Guid.Parse("0470ff9a-f359-40a4-a5de-cbbd765c8e7b"),
                 PayPeriod = new DateTime(2020, 1, 1),
-                Sent = new DateTime(2020, 1, 25),
+                Created = new DateTime(2020, 1, 25),
                 EmployeeId = alice.Id
             });
 
@@ -63,7 +64,7 @@ namespace Tymish.Persistence
             {
                 Id = Guid.Parse("dfa95a83-3187-4ffb-a6f9-5a8a62d6bf9c"),
                 PayPeriod = new DateTime(2020, 2, 1),
-                Sent = new DateTime(2020, 2, 25),
+                Created = new DateTime(2020, 2, 25),
                 EmployeeId = alice.Id
             });
 

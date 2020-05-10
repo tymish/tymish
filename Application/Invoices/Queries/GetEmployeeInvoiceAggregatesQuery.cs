@@ -40,9 +40,8 @@ namespace Tymish.Application.Invoices.Query
                     .Set<Invoice>()
                     .Where(e
                         => e.EmployeeId == employee.Id
-                        && e.Sent.HasValue
-                        && e.Sent.Value.Month == request.Sent.Month
-                        && e.Sent.Value.Year == request.Sent.Year)
+                        && e.Created.Month == request.Sent.Month
+                        && e.Created.Year == request.Sent.Year)
                     .SingleOrDefaultAsync(cancellationToken);
 
                 if (invoice == default(Invoice))
@@ -55,7 +54,7 @@ namespace Tymish.Application.Invoices.Query
                 {
                     InvoiceId = invoice.Id,
                     Employee = employee,
-                    Sent = invoice.Sent,
+                    Sent = invoice.Created,
                     Submitted = invoice.Submitted,
                     Paid = invoice.Paid
                 };

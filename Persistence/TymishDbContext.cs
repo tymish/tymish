@@ -14,7 +14,7 @@ namespace Tymish.Persistence
 
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Invoice> Invoices { get; set; }
-        public DbSet<Vendor> Vendors { get; set; }
+        public DbSet<VendorStudio> Vendors { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

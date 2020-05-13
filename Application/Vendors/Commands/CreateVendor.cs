@@ -7,12 +7,12 @@ using Tymish.Domain.Entities;
 
 namespace Tymish.Application.Vendors.Commands
 {
-    public class CreateVendorCommand : IRequest<Vendor>
+    public class CreateVendorCommand : IRequest<VendorStudio>
     {
         public decimal HourlyRate { get; set; }
         public Guid StudioId { get; set; }
     }
-    public class CreateVendorHandler : IRequestHandler<CreateVendorCommand, Vendor>
+    public class CreateVendorHandler : IRequestHandler<CreateVendorCommand, VendorStudio>
     {
         private ITymishDbContext _context;
         public CreateVendorHandler(ITymishDbContext context)
@@ -20,14 +20,14 @@ namespace Tymish.Application.Vendors.Commands
             _context = context;
         }
 
-        public async Task<Vendor> Handle(CreateVendorCommand request, CancellationToken cancellationToken)
+        public async Task<VendorStudio> Handle(CreateVendorCommand request, CancellationToken cancellationToken)
         {
             var studio = await _context.Set<Studio>()
                 .FindAsync(request.StudioId, cancellationToken);
 
-            var vendor = new Vendor
+            var vendor = new VendorStudio
             {
-                HourlyRate = request.HourlyRate,
+                HourlyPay = request.HourlyRate,
             };
 
             vendor.Studios.Add(studio);

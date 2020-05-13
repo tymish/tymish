@@ -5,6 +5,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Tymish.Application.Invoices.Commands;
+using Tymish.Application.Invoices.Query;
 using Tymish.Application.Vendors.Commands;
 using Tymish.Domain.Entities;
 
@@ -34,6 +35,8 @@ namespace Tymish.WebApi.Controllers
         [ProducesResponseType(typeof(IList<VendorInvoice>), StatusCodes.Status200OK)]
         public async Task<IActionResult> ListInvoices(string vendorId)
         {
+            var response = await _mediator
+                .Send(new GetVendorInvoices{ VendorId = vendorId });
             return Ok();
         }
 

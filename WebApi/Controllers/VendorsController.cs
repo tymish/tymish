@@ -37,13 +37,15 @@ namespace Tymish.WebApi.Controllers
         {
             var response = await _mediator
                 .Send(new GetVendorInvoices{ VendorId = vendorId });
-            return Ok();
+            return Ok(response);
         }
 
         [HttpGet("{vendorId}/invoices/{invoiceId}", Name="getInvoice")]
         public async Task<IActionResult> GetInvoice(string vendorId, Guid invoiceId)
         {
-            return Ok();
+            var response = await _mediator
+                .Send(new GetVendorInvoice{ InvoiceId = invoiceId });
+            return Ok(response);
         }
 
         [HttpPost("{vendorId}/invoices/submit", Name="submitInvoice")]

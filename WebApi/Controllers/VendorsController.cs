@@ -24,7 +24,7 @@ namespace Tymish.WebApi.Controllers
         [HttpPost(Name="createVendorStudio")]
         [Produces("application/json")]
         [ProducesResponseType(typeof(VendorStudio), StatusCodes.Status201Created)]
-        public async Task<IActionResult> Post([FromBody] CreateVendorCommand request)
+        public async Task<IActionResult> Post([FromBody] CreateVendorStudioCommand request)
         {
             var response = await _mediator.Send(request);
             return Ok(response);

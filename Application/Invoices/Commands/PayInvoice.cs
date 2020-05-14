@@ -12,10 +12,9 @@ namespace Tymish.Application.Invoices.Commands
 {
     public class PayInvoiceCommand : IRequest<Invoice>
     {
-        /// <summary>Invoice.Id</summary>
-        public Guid Id { get; set; }
+        public Guid InvoiceId { get; set; }
         [Required]
-        public string reference { get; set; }
+        public string PaymentReference { get; set; }
     }
 
     public class PayInvoiceHandler : IRequestHandler<PayInvoiceCommand, Invoice>
@@ -29,13 +28,13 @@ namespace Tymish.Application.Invoices.Commands
         {
             var invoice = await _context.Set<Invoice>()
                 .SingleOrDefaultAsync(
-                    e => e.Id == request.Id,
+                    e => e.Id == request.InvoiceId,
                     cancellationToken
                 );
             
             if (invoice == default(Invoice))
             {
-                throw new NotFoundException(nameof(Invoice), request.Id);
+                throw new NotFoundException(nameof(Invoice), request.InvoiceId);
             }
             
             invoice.Paid = DateTime.UtcNow;

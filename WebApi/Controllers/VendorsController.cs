@@ -36,7 +36,7 @@ namespace Tymish.WebApi.Controllers
         public async Task<IActionResult> ListInvoices(string vendorId)
         {
             var response = await _mediator
-                .Send(new ListVendorInvoices{ VendorId = vendorId });
+                .Send(new ListVendorInvoicesQuery{ VendorId = vendorId });
             return Ok(response);
         }
 
@@ -44,7 +44,7 @@ namespace Tymish.WebApi.Controllers
         public async Task<IActionResult> GetInvoice(string vendorId, Guid invoiceId)
         {
             var response = await _mediator
-                .Send(new GetVendorInvoice{ InvoiceId = invoiceId });
+                .Send(new GetVendorInvoiceQuery{ InvoiceId = invoiceId });
             return Ok(response);
         }
 

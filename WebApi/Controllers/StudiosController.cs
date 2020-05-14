@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Tymish.Application.Invoices.Commands;
 using Tymish.Application.Invoices.Query;
 
 namespace Tymish.WebApi.Controllers
@@ -20,7 +21,7 @@ namespace Tymish.WebApi.Controllers
         public async Task<IActionResult> GetInvoice(Guid invoiceId)
         {
             var response = await _mediator
-                .Send(new GetVendorInvoice{ InvoiceId = invoiceId });
+                .Send(new GetVendorInvoiceQuery{ InvoiceId = invoiceId });
             return Ok(response);
         }
 
@@ -28,14 +29,19 @@ namespace Tymish.WebApi.Controllers
         public async Task<IActionResult> ListInvoices(Guid studioId)
         {
             var response = await _mediator 
-                .Send(new ListStudioInvoices{StudioId = studioId});
+                .Send(new ListStudioInvoicesQuery{StudioId = studioId});
             return Ok(response);
         }
 
-        [HttpPut("{studioId}/invoices/{invoiceId}/pay")]
-        public async Task<IActionResult> PayInvoice(Guid studioId, string invoiceId)
+        [HttpPut("{studioId}/invoices/pay")]
+        public async Task<IActionResult> PayInvoice
+        (
+            Guid studioId,
+            [FromBody] PayInvoiceCommand request
+        )
         {
-            return Ok();
+            var response = await _mediator.Send(request);
+            return Ok(response);
         }
     }
 }

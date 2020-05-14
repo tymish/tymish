@@ -9,19 +9,19 @@ using System.Collections.Generic;
 
 namespace Tymish.Application.Invoices.Query
 {
-    public class ListStudioInvoices : IRequest<IList<Invoice>>
+    public class ListStudioInvoicesQuery : IRequest<IList<Invoice>>
     {
         public Guid StudioId { get; set; }
     }
 
-    public class ListStudioInvoicesHandler : IRequestHandler<ListStudioInvoices, IList<Invoice>>
+    public class ListStudioInvoicesHandler : IRequestHandler<ListStudioInvoicesQuery, IList<Invoice>>
     {
         private readonly ITymishDbContext _context;
         public ListStudioInvoicesHandler(ITymishDbContext context) {
             _context = context;
         }
 
-        public async Task<IList<Invoice>> Handle(ListStudioInvoices request, CancellationToken cancellationToken)
+        public async Task<IList<Invoice>> Handle(ListStudioInvoicesQuery request, CancellationToken cancellationToken)
         {
             var invoices = _context.Set<Studio>()
                 .Single(e => e.Id == request.StudioId)

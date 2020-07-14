@@ -22,16 +22,15 @@ namespace Tymish.WebApi.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost(Name="createVendorStudio")]
-        [Produces("application/json")]
-        [ProducesResponseType(typeof(VendorStudio), StatusCodes.Status201Created)]
-        public async Task<IActionResult> Post([FromBody] CreateVendorStudioCommand request)
+        #region GETs
+        [HttpGet(Name="listVendors")]
+        public async Task<IActionResult> ListVendors()
         {
-            var response = await _mediator.Send(request);
-            return Ok(response);
+            var response = await _mediator.Send(null);
+            return Ok(Response);
         }
 
-        [HttpGet("{vendorId}/invoices", Name="getInvoices")]
+        [HttpGet("{vendorId}/invoices", Name="listInvoices")]
         [ProducesResponseType(typeof(IList<VendorInvoice>), StatusCodes.Status200OK)]
         public async Task<IActionResult> ListInvoices(string vendorId)
         {
@@ -47,14 +46,35 @@ namespace Tymish.WebApi.Controllers
                 .Send(new GetVendorInvoiceQuery{ InvoiceId = invoiceId });
             return Ok(response);
         }
+        #endregion
+        [HttpPost(Name="addVendor")]
+        public async Task<IActionResult> AddVendor()
+        {
+            return Accepted("", null);
+        }
 
-        [HttpPost("{vendorId}/invoices/submit", Name="submitInvoice")]
+        [HttpPost("{vendorId}/register", Name="registerVendor")]
+        public async Task<IActionResult> RegisterVendor()
+        {
+            return Created("", null);
+        }
+
+        [HttpPost("{vendorId}/invoices", Name="submitVendorInvoice")]
         [Produces("application/json")]
         [ProducesResponseType(typeof(Invoice), StatusCodes.Status201Created)]
         public async Task<IActionResult> SubmitInvoice(string vendorId, [FromBody] SubmitInvoiceCommand request)
         {
             var response = await _mediator.Send(request);
             return Created($"/{vendorId}/invoices/{response.Id}", response);
+        }
+
+        [HttpPost(Name="createVendorStudio")]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(VendorStudio), StatusCodes.Status201Created)]
+        public async Task<IActionResult> Post([FromBody] CreateVendorStudioCommand request)
+        {
+            var response = await _mediator.Send(request);
+            return Ok(response);
         }
     }
 }

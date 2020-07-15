@@ -23,7 +23,6 @@ namespace Tymish.WebApi.Controllers
         }
 
         [HttpGet("{id:guid}", Name="getInvoiceById")]
-        [Produces("application/json")]
         [ProducesResponseType(typeof(Invoice), StatusCodes.Status200OK)]
         public async Task<IActionResult> Get([FromRoute] Guid id)
         {
@@ -31,21 +30,20 @@ namespace Tymish.WebApi.Controllers
             return Ok(response);
         }
 
-        [HttpPut("pay", Name="payInvoice")]
-        [Produces("application/json")]
-        [ProducesResponseType(typeof(Invoice), StatusCodes.Status200OK)]
-        public async Task<IActionResult> PayInvoice([FromBody] PayInvoiceCommand request)
+        [HttpGet(Name="listInvoices")]
+        public async Task<IActionResult> ListInvoices([FromQuery] string status)
         {
-            var response = await _mediator.Send(request);
-            return Ok(response);
+            return Ok();
         }
 
-        [HttpPut("{id:guid}/sent", Name="sendInvoice")]
-        [Produces("application/json")]
+
+        [HttpPost("{id:guid}/pay", Name="payInvoice")]
         [ProducesResponseType(typeof(Invoice), StatusCodes.Status200OK)]
-        public async Task<IActionResult> SendInvoice([FromRoute] Guid invoiceId)
+        public async Task<IActionResult> PayInvoice(
+            [FromRoute] Guid id,
+            [FromBody] PayInvoiceCommand request)
         {
-            var response = await _mediator.Send(new SendInvoiceCommand{InvoiceId = invoiceId});
+            var response = await _mediator.Send(request);
             return Ok(response);
         }
     }

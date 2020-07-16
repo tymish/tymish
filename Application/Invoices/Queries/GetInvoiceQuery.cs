@@ -9,22 +9,24 @@ using Tymish.Application.Exceptions;
 
 namespace Tymish.Application.Invoices.Query
 {
-    public class GetVendorInvoiceQuery : IRequest<Invoice>
-    {   
+    public class GetInvoiceQuery : IRequest<Invoice>
+    {
         public Guid InvoiceId { get; set; }
     }
 
-    public class GetVendorInvoiceHandler : IRequestHandler<GetVendorInvoiceQuery, Invoice>
+    public class GetInvoiceHandler : IRequestHandler<GetInvoiceQuery, Invoice>
     {
         private readonly ITymishDbContext _context;
-        public GetVendorInvoiceHandler(ITymishDbContext context) {
+        public GetInvoiceHandler(ITymishDbContext context) {
             _context = context;
         }
 
-        public async Task<Invoice> Handle(GetVendorInvoiceQuery request, CancellationToken cancellationToken)
+        public async Task<Invoice> Handle(GetInvoiceQuery request, CancellationToken cancellationToken)
         {
-            var entity = await _context.Set<Invoice>()
-                .SingleOrDefaultAsync(e => e.Id == request.InvoiceId);
+            var entity = await _context
+                .Set<Invoice>()
+                .SingleOrDefaultAsync(invoice
+                    => invoice.Id == request.InvoiceId);
 
             if (entity == default(Invoice))
             {

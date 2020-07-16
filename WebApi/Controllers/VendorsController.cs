@@ -68,10 +68,10 @@ namespace Tymish.WebApi.Controllers
             return Created($"/{vendorId}/invoices/{response.Id}", response);
         }
 
-        [HttpPost(Name="createVendorStudio")]
+        [HttpPost(Name="addVendor")]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(VendorStudio), StatusCodes.Status201Created)]
-        public async Task<IActionResult> Post([FromBody] CreateVendorStudioCommand request)
+        [ProducesResponseType(typeof(Vendor), StatusCodes.Status201Created)]
+        public async Task<IActionResult> Post([FromBody] AddVendorCommand request)
         {
             var response = await _mediator.Send(request);
             return Ok(response);

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -26,14 +25,15 @@ namespace Tymish.WebApi.Controllers
         [ProducesResponseType(typeof(Invoice), StatusCodes.Status200OK)]
         public async Task<IActionResult> Get([FromRoute] Guid id)
         {
-            var response = await _mediator.Send(new GetInvoiceByIdQuery(id));
+            var response = await _mediator.Send(new GetInvoiceQuery(id));
             return Ok(response);
         }
 
         [HttpGet(Name="listInvoices")]
         public async Task<IActionResult> ListInvoices([FromQuery] string status)
         {
-            return Ok();
+            var response = await _mediator.Send(new ListInvoicesQuery());
+            return Ok(response);
         }
 
 

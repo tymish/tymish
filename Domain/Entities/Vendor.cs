@@ -8,6 +8,7 @@ namespace Tymish.Domain.Entities
         public string? GivenName { get; set; }
         public string? FamilyName { get; set; }
         public string Email { get; set; }
+        public string? MobilePhone { get; set; }
         public decimal HourlyPay { get; set; }
         public Vendor(string email)
         {

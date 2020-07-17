@@ -14,7 +14,6 @@ namespace Tymish.WebApi.Controllers
     public class InvoicesController : ControllerBase
     {
         private readonly IMediator _mediator;
-
         public InvoicesController(IMediator mediator)
         {
             _mediator = mediator;
@@ -24,31 +23,38 @@ namespace Tymish.WebApi.Controllers
         [ProducesResponseType(typeof(Invoice), StatusCodes.Status200OK)]
         public async Task<IActionResult> Get([FromRoute] Guid id)
         {
-            var response = await _mediator.Send(new GetInvoiceQuery(id));
+            var request = new GetInvoiceQuery(id);
+            var response = await _mediator.Send(request);
             return Ok(response);
         }
 
         [HttpGet(Name="listInvoices")]
         public async Task<IActionResult> ListInvoices([FromQuery] string status)
         {
-            var response = await _mediator.Send(new ListInvoicesQuery());
+            var request = new ListInvoicesQuery();
+            var response = await _mediator.Send(request);
             return Ok(response);
         }
 
         [HttpGet(Name="listInvoicesForVendor")]
         public async Task<IActionResult> ListInvoicesForVendor([FromQuery] Guid vendorId)
         {
-            var response = await _mediator
-                .Send(new ListInvoicesForVendorQuery(vendorId));
+            var request = new ListInvoicesForVendorQuery(vendorId);
+            var response = await _mediator.Send(request);
             return Ok(response);
         }
 
-
-        [HttpPost("{id:guid}/pay", Name="payInvoice")]
+        [HttpPost("submit", Name="submitInvoice")]
         [ProducesResponseType(typeof(Invoice), StatusCodes.Status200OK)]
-        public async Task<IActionResult> PayInvoice(
-            [FromRoute] Guid id,
-            [FromBody] PayInvoiceCommand request)
+        public async Task<IActionResult> SubmitInvoice([FromBody] SubmitInvoiceCommand request)
+        {
+            var response = await _mediator.Send(request);
+            return Ok(response);
+        }
+
+        [HttpPost("pay", Name="payInvoice")]
+        [ProducesResponseType(typeof(Invoice), StatusCodes.Status200OK)]
+        public async Task<IActionResult> PayInvoice([FromBody] PayInvoiceCommand request)
         {
             var response = await _mediator.Send(request);
             return Ok(response);

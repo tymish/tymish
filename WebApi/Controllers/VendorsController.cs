@@ -27,7 +27,8 @@ namespace Tymish.WebApi.Controllers
         [HttpGet(Name="listVendors")]
         public async Task<IActionResult> ListVendors()
         {
-            var response = await _mediator.Send(new ListVendorsQuery());
+            var request = new ListVendorsQuery();
+            var response = await _mediator.Send(request);
             return Ok(Response);
         }
 
@@ -35,30 +36,22 @@ namespace Tymish.WebApi.Controllers
         [ProducesResponseType(typeof(IList<Invoice>), StatusCodes.Status200OK)]
         public async Task<IActionResult> ListInvoices(Guid vendorId)
         {
-            var response = await _mediator
-                .Send(new ListInvoicesForVendorQuery(vendorId));
+            var request = new ListInvoicesForVendorQuery(vendorId);
+            var response = await _mediator.Send(request);
             return Ok(response);
         }
         #endregion
 
-
-        [HttpPost("{vendorId}/register", Name="registerVendor")]
-        public async Task<IActionResult> RegisterVendor(Guid vendorId)
-        {
-            return Created("", null);
-        }
-
-        [HttpPost("{vendorId}/invoices", Name="submitVendorInvoice")]
-        [ProducesResponseType(typeof(Invoice), StatusCodes.Status201Created)]
-        public async Task<IActionResult> SubmitInvoice(Guid vendorId, [FromBody] SubmitInvoiceCommand request)
-        {
-            var response = await _mediator.Send(request);
-            return Created($"/{vendorId}/invoices/{response.Id}", response);
-        }
-
         [HttpPost(Name="addVendor")]
         [ProducesResponseType(typeof(Vendor), StatusCodes.Status201Created)]
         public async Task<IActionResult> AddVendor([FromBody] AddVendorCommand request)
+        {
+            var response = await _mediator.Send(request);
+            return Ok(response);
+        }
+
+        [HttpPost("register", Name="registerVendor")]
+        public async Task<IActionResult> RegisterVendor(RegisterVendorCommand request)
         {
             var response = await _mediator.Send(request);
             return Ok(response);

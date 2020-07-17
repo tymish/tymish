@@ -14,7 +14,7 @@ namespace Tymish.Application.Vendors.Commands
     }
     public class AddVendorHandler : IRequestHandler<AddVendorCommand, Vendor>
     {
-        private ITymishDbContext _context;
+        private readonly ITymishDbContext _context;
         public AddVendorHandler(ITymishDbContext context)
         {
             _context = context;

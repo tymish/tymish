@@ -9,8 +9,9 @@ namespace Tymish.Domain.Entities
         public DateTime Created { get; set; }
         public DateTime? Submitted { get; set; }
         public IList<TimeEntry>? TimeEntries { get; set; }
+        public decimal TotalAmount { get; set; }
         public DateTime? Paid { get; set; }
-        public decimal PaymentAmount { get; set; }
+        public decimal PaidAmount { get; set; }
         public string PaymentReference { get; set; }
         public Guid VendorId { get; set; }
         public Invoice()

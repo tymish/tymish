@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Tymish.Application.Invoices.Commands;
 using Tymish.Application.Invoices.Query;
 using Tymish.Application.Vendors.Commands;
 using Tymish.Application.Vendors.Queries;
@@ -32,11 +31,11 @@ namespace Tymish.WebApi.Controllers
             return Ok(Response);
         }
 
-        [HttpGet("{vendorId}/invoices", Name="listInvoices")]
+        [HttpGet("{id}/invoices", Name="listVendorInvoices")]
         [ProducesResponseType(typeof(IList<Invoice>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> ListInvoices(Guid vendorId)
+        public async Task<IActionResult> ListInvoices(Guid id)
         {
-            var request = new ListInvoicesForVendorQuery(vendorId);
+            var request = new ListInvoicesForVendorQuery(id);
             var response = await _mediator.Send(request);
             return Ok(response);
         }

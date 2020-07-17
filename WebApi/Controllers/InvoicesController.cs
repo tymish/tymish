@@ -19,7 +19,7 @@ namespace Tymish.WebApi.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet("{id:guid}", Name="getInvoiceById")]
+        [HttpGet("{id}", Name="getInvoiceById")]
         [ProducesResponseType(typeof(Invoice), StatusCodes.Status200OK)]
         public async Task<IActionResult> Get([FromRoute] Guid id)
         {
@@ -32,14 +32,6 @@ namespace Tymish.WebApi.Controllers
         public async Task<IActionResult> ListInvoices([FromQuery] string status)
         {
             var request = new ListInvoicesQuery();
-            var response = await _mediator.Send(request);
-            return Ok(response);
-        }
-
-        [HttpGet(Name="listInvoicesForVendor")]
-        public async Task<IActionResult> ListInvoicesForVendor([FromQuery] Guid vendorId)
-        {
-            var request = new ListInvoicesForVendorQuery(vendorId);
             var response = await _mediator.Send(request);
             return Ok(response);
         }

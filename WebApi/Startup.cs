@@ -5,20 +5,16 @@ using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
-using System.IdentityModel.Tokens.Jwt;
 using Tymish.Application.Interfaces;
 using Tymish.Gateways;
 using Tymish.Persistence;
 using Tymish.WebApi.Middleware;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 
 namespace WebApi
 {
@@ -68,13 +64,6 @@ namespace WebApi
             services.AddSwaggerGen(options =>
                 options.SwaggerDoc("v1", new OpenApiInfo { Title = "Tymish Api", Version = "v1" })
             );
-
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-            {
-                options.Authority = "Auth0:Domain";
-                options.Audience = "https://127.0.0.1:5000";
-            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -107,10 +96,6 @@ namespace WebApi
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
-
-            app.UseAuthorization();
-
-            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {

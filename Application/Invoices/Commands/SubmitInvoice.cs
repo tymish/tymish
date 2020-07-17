@@ -19,7 +19,6 @@ namespace Tymish.Application.Invoices.Commands
     public class SubmitInvoiceHandler : IRequestHandler<SubmitInvoiceCommand, Invoice>
     {
         private readonly ITymishDbContext _context;
-
         public SubmitInvoiceHandler(ITymishDbContext context) {
             _context = context;
         }

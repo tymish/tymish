@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Tymish.Application.Dtos;
 using Tymish.Application.Invoices.Commands;
 using Tymish.Application.Invoices.Query;
 using Tymish.Domain.Entities;
@@ -33,6 +32,14 @@ namespace Tymish.WebApi.Controllers
         public async Task<IActionResult> ListInvoices([FromQuery] string status)
         {
             var response = await _mediator.Send(new ListInvoicesQuery());
+            return Ok(response);
+        }
+
+        [HttpGet(Name="listInvoicesForVendor")]
+        public async Task<IActionResult> ListInvoicesForVendor([FromQuery] Guid vendorId)
+        {
+            var response = await _mediator
+                .Send(new ListInvoicesForVendorQuery(vendorId));
             return Ok(response);
         }
 

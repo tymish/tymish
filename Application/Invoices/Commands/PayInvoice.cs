@@ -14,13 +14,15 @@ namespace Tymish.Application.Invoices.Commands
     {
         public Guid InvoiceId { get; set; }
         [Required]
+        [Range(0,10000)]
+        public Decimal PaymentAmount { get; set; }
+        [Required]
         public string PaymentReference { get; set; }
     }
 
     public class PayInvoiceHandler : IRequestHandler<PayInvoiceCommand, Invoice>
     {
         private readonly ITymishDbContext _context;
-
         public PayInvoiceHandler(ITymishDbContext context) {
             _context = context;
         }
@@ -38,6 +40,8 @@ namespace Tymish.Application.Invoices.Commands
             }
             
             invoice.Paid = DateTime.UtcNow;
+            invoice.PaymentAmount = request.PaymentAmount;
+            invoice.PaymentReference = request.PaymentReference;
 
             _context.Set<Invoice>().Update(invoice);
 

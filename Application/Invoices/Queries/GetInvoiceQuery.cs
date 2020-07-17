@@ -12,6 +12,10 @@ namespace Tymish.Application.Invoices.Query
     public class GetInvoiceQuery : IRequest<Invoice>
     {
         public Guid InvoiceId { get; set; }
+        public GetInvoiceQuery(Guid invoiceId)
+        {
+            InvoiceId = invoiceId;
+        }
     }
 
     public class GetInvoiceHandler : IRequestHandler<GetInvoiceQuery, Invoice>
@@ -23,17 +27,17 @@ namespace Tymish.Application.Invoices.Query
 
         public async Task<Invoice> Handle(GetInvoiceQuery request, CancellationToken cancellationToken)
         {
-            var entity = await _context
+            var invoice = await _context
                 .Set<Invoice>()
                 .SingleOrDefaultAsync(invoice
                     => invoice.Id == request.InvoiceId);
 
-            if (entity == default(Invoice))
+            if (invoice == default(Invoice))
             {
                 throw new NotFoundException(nameof(Invoice), request.InvoiceId);
             }
 
-            return entity;
+            return invoice;
         }
     }
 }

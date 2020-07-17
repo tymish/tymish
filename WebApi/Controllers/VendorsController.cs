@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Tymish.Application.Invoices.Commands;
 using Tymish.Application.Invoices.Query;
 using Tymish.Application.Vendors.Commands;
+using Tymish.Application.Vendors.Queries;
 using Tymish.Domain.Entities;
 
 namespace Tymish.WebApi.Controllers
@@ -26,52 +27,38 @@ namespace Tymish.WebApi.Controllers
         [HttpGet(Name="listVendors")]
         public async Task<IActionResult> ListVendors()
         {
-            var response = await _mediator.Send(null);
+            var response = await _mediator.Send(new ListVendorsQuery());
             return Ok(Response);
         }
 
         [HttpGet("{vendorId}/invoices", Name="listInvoices")]
-        [ProducesResponseType(typeof(IList<VendorInvoice>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> ListInvoices(string vendorId)
+        [ProducesResponseType(typeof(IList<Invoice>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> ListInvoices(Guid vendorId)
         {
             var response = await _mediator
-                .Send(new ListVendorInvoicesQuery{ VendorId = vendorId });
-            return Ok(response);
-        }
-
-        [HttpGet("{vendorId}/invoices/{invoiceId}", Name="getInvoice")]
-        public async Task<IActionResult> GetInvoice(string vendorId, Guid invoiceId)
-        {
-            var response = await _mediator
-                .Send(new GetVendorInvoiceQuery{ InvoiceId = invoiceId });
+                .Send(new ListInvoicesForVendorQuery(vendorId));
             return Ok(response);
         }
         #endregion
-        [HttpPost(Name="addVendor")]
-        public async Task<IActionResult> AddVendor()
-        {
-            return Accepted("", null);
-        }
+
 
         [HttpPost("{vendorId}/register", Name="registerVendor")]
-        public async Task<IActionResult> RegisterVendor()
+        public async Task<IActionResult> RegisterVendor(Guid vendorId)
         {
             return Created("", null);
         }
 
         [HttpPost("{vendorId}/invoices", Name="submitVendorInvoice")]
-        [Produces("application/json")]
         [ProducesResponseType(typeof(Invoice), StatusCodes.Status201Created)]
-        public async Task<IActionResult> SubmitInvoice(string vendorId, [FromBody] SubmitInvoiceCommand request)
+        public async Task<IActionResult> SubmitInvoice(Guid vendorId, [FromBody] SubmitInvoiceCommand request)
         {
             var response = await _mediator.Send(request);
             return Created($"/{vendorId}/invoices/{response.Id}", response);
         }
 
         [HttpPost(Name="addVendor")]
-        [Produces("application/json")]
         [ProducesResponseType(typeof(Vendor), StatusCodes.Status201Created)]
-        public async Task<IActionResult> Post([FromBody] AddVendorCommand request)
+        public async Task<IActionResult> AddVendor([FromBody] AddVendorCommand request)
         {
             var response = await _mediator.Send(request);
             return Ok(response);

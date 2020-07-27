@@ -13,6 +13,7 @@ namespace Tymish.WebApi.Controllers
 {
     [ApiController]
     [Route("vendors")]
+    [Produces("application/json")]
     public class VendorsController : ControllerBase
     {
         private readonly IMediator _mediator;

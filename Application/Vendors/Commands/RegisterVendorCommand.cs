@@ -11,8 +11,7 @@ namespace Tymish.Application.Vendors.Commands
     public class RegisterVendorCommand : IRequest<Vendor>
     {
         public Guid VendorId { get; set; }
-        public string GivenName { get; set; }
-        public string FamilyName { get; set; }
+        public string Password { get; set; }
         public string MobilePhone { get; set; }
     }
     public class RegisterVendorHandler : IRequestHandler<RegisterVendorCommand, Vendor>
@@ -31,9 +30,8 @@ namespace Tymish.Application.Vendors.Commands
                     => vendor.Id == request.VendorId,
                     cancellationToken);
 
-            vendor.GivenName = request.GivenName;
-            vendor.FamilyName = request.FamilyName;
             vendor.MobilePhone = request.MobilePhone;
+            vendor.Password = request.Password;
 
             _context.Set<Vendor>().Update(vendor);            
             await _context.SaveChangesAsync(cancellationToken);

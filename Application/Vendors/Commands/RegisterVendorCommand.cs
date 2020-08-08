@@ -32,6 +32,7 @@ namespace Tymish.Application.Vendors.Commands
 
             vendor.MobilePhone = request.MobilePhone;
             vendor.Password = request.Password;
+            vendor.Registered = DateTime.Now;
 
             _context.Set<Vendor>().Update(vendor);            
             await _context.SaveChangesAsync(cancellationToken);

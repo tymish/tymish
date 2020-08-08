@@ -11,9 +11,12 @@ namespace Tymish.Domain.Entities
         public string? MobilePhone { get; set; }
         public string? Password { get; set; }
         public decimal HourlyPay { get; set; }
+        public DateTime Created { get; }
+        public DateTime? Registered { get; set; }
         public Vendor(string email)
         {
             Email = email;
+            Created = DateTime.Now;
         }
     }
 }

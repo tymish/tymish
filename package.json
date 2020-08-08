@@ -7,6 +7,7 @@
         "gen-sql": "dotnet ef migrations script -p WebApi -o ./Persistence/Scripts/create-db.sql",
         "add-migration": "dotnet ef migrations add -p Persistence -s WebApi",
         "drop-db": "sudo -i -u postgres dropdb Tymish",
+        "postdrop-db": "rm ./Persistence/Migrations/*",
         "update-db": "dotnet ef database update -p Persistence -s WebApi"
     }
 }

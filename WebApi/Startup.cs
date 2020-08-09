@@ -47,6 +47,7 @@ namespace WebApi
             services.AddMediatR(Assembly.Load("Application"));
 
             services.AddScoped<ITymishDbContext>(s => s.GetService<TymishDbContext>());
+            services.AddScoped<IAuthGateway, AuthGateway>();
 
             services.AddScoped<IEmailGateway>(
                 s => { 
@@ -57,6 +58,11 @@ namespace WebApi
                         : new NoEmailGateway() as IEmailGateway;
                 });
 
+            // Configuration Options
+            IConfigurationSection authOptions = Configuration.GetSection("Jwt");
+            services.Configure<AuthOptions>(authOptions);
+
+            // DB
             services.AddDbContext<TymishDbContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("TymishContext"))
             );

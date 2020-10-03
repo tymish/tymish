@@ -30,9 +30,9 @@ namespace Tymish.WebApi.Controllers
             return Ok(Response);
         }
 
-        [HttpGet("{vendorId}/invoices", Name="listInvoices")]
+        [HttpGet("{vendorId}/invoices", Name="listVendorInvoices")]
         [ProducesResponseType(typeof(IList<VendorInvoice>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> ListInvoices(string vendorId)
+        public async Task<IActionResult> ListVendorInvoices(string vendorId)
         {
             var response = await _mediator
                 .Send(new ListVendorInvoicesQuery{ VendorId = vendorId });

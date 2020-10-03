@@ -25,8 +25,8 @@ namespace Tymish.WebApi.Controllers
             return Ok(response);
         }
 
-        [HttpGet("{studioId}/invoices", Name="ListInvoices")]
-        public async Task<IActionResult> ListInvoices(Guid studioId)
+        [HttpGet("{studioId}/invoices", Name="listStudioInvoices")]
+        public async Task<IActionResult> ListStudioInvoices(Guid studioId)
         {
             var response = await _mediator 
                 .Send(new ListStudioInvoicesQuery{StudioId = studioId});

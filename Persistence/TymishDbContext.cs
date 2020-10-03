@@ -1,7 +1,6 @@
 using Tymish.Domain.Entities;
 using Tymish.Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace Tymish.Persistence
 {
@@ -13,7 +12,7 @@ namespace Tymish.Persistence
             : base(options) { }
 
         public DbSet<Invoice> Invoices { get; set; }
-        public DbSet<VendorStudio> Vendors { get; set; }
+        public DbSet<Vendor> Vendors { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

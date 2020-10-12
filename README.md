@@ -64,3 +64,7 @@ psql
 \l
 drop database "Tymish";
 ```
+
+## VS Code Extensions
+Use the `ckolkman.vscode-postgres` extension to view postgres db.
+I am using the `dev` user not the `postgres` default user because it has no password.

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Tymish.Application.Invoices.Query;
 using Tymish.Application.Vendors.Commands;
+using Tymish.Application.Vendors.Queries;
 using Tymish.Domain.Entities;
 
 namespace Tymish.WebApi.Controllers
@@ -27,7 +28,7 @@ namespace Tymish.WebApi.Controllers
         [ProducesResponseType(typeof(IList<Invoice>), StatusCodes.Status200OK)]
         public async Task<IActionResult> ListVendors()
         {
-            var response = await _mediator.Send(null);
+            var response = await _mediator.Send(new ListVendorsQuery());
             return Ok(Response);
         }
 

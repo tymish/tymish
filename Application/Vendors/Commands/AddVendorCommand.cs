@@ -40,7 +40,7 @@ namespace Tymish.Application.Vendors.Commands
             await _email.Send(
                 request.Email,
                 "Dance Code invites you to register for Tymish",
-                $"http://127.0.0.1:4200/register/{vendor.Id}");
+                $"http://127.0.0.1:4201/register/{vendor.Id}");
 
             return vendor;
         }

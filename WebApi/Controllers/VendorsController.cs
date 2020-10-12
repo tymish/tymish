@@ -24,6 +24,15 @@ namespace Tymish.WebApi.Controllers
         }
 
         #region GETs
+        [HttpGet("{id}", Name="getVendor")]
+        [ProducesResponseType(typeof(Vendor), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetVendor(Guid id)
+        {
+            var request = new GetVendorQuery{VendorId = id};
+            var response = await _mediator.Send(request);
+            return Ok(response);
+        }
+
         [HttpGet(Name="listVendors")]
         [ProducesResponseType(typeof(IList<Invoice>), StatusCodes.Status200OK)]
         public async Task<IActionResult> ListVendors()

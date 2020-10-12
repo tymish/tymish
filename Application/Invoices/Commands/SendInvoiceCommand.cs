@@ -38,17 +38,13 @@ namespace Tymish.Application.Invoices.Commands
                 throw new NotFoundException(nameof(Invoice), request.InvoiceId);
             }
 
-            invoice.Sent = DateTime.UtcNow;
-
-            _context.Set<Invoice>().Update(invoice);
-
-            await Task.WhenAll(
-                _context.SaveChangesAsync(cancellationToken),
-                _email.Send(
-                    invoice.Employee.Email,
-                    "Submit your invoice",
-                    $"https://localhost:4200/submit-invoice/{invoice.Id}")
-            );
+            // await Task.WhenAll(
+            //     _context.SaveChangesAsync(cancellationToken),
+            //     _email.Send(
+            //         invoice.Employee.Email,
+            //         "Submit your invoice",
+            //         $"https://localhost:4200/submit-invoice/{invoice.Id}")
+            // );
 
             return invoice;
         }

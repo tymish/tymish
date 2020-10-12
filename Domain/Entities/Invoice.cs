@@ -6,13 +6,18 @@ namespace Tymish.Domain.Entities
     public class Invoice
     {
         public Guid Id { get; set; }
-        public DateTime PayPeriod { get; set; }
-        public DateTime? Sent { get; set; }
+        public DateTime Created { get; set; }
         public DateTime? Submitted { get; set; }
-        public DateTime? Paid { get; set; }
         public IList<TimeEntry>? TimeEntries { get; set; }
-        public virtual Guid EmployeeId { get; set; }
-        public virtual Employee? Employee { get; set; }
+        public decimal TotalAmount { get; set; }
+        public DateTime? Paid { get; set; }
+        public decimal PaidAmount { get; set; }
+        public string PaymentReference { get; set; }
+        public Guid VendorId { get; set; }
+        public Invoice()
+        {
+            PaymentReference = "";
+        }
     }
 
     public class TimeEntry

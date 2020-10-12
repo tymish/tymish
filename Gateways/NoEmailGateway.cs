@@ -8,7 +8,9 @@ namespace Tymish.Gateways
     {
         public async Task Send(string toEmail, string subject, string content)
         {
-            Console.WriteLine($"No email sent. {toEmail}, subject: {subject}, content: {content}");
+            await Task.Run(()
+                => Console.WriteLine($"No email sent. {toEmail}, subject: {subject}, content: {content}")
+            );
         }
     }
 }

@@ -5,7 +5,6 @@ using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -48,6 +47,7 @@ namespace WebApi
             services.AddMediatR(Assembly.Load("Application"));
 
             services.AddScoped<ITymishDbContext>(s => s.GetService<TymishDbContext>());
+            services.AddScoped<IAuthGateway, AuthGateway>();
 
             services.AddScoped<IEmailGateway>(
                 s => { 
@@ -58,6 +58,11 @@ namespace WebApi
                         : new NoEmailGateway() as IEmailGateway;
                 });
 
+            // Configuration Options
+            IConfigurationSection authOptions = Configuration.GetSection("Jwt");
+            services.Configure<AuthOptions>(authOptions);
+
+            // DB
             services.AddDbContext<TymishDbContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("TymishContext"))
             );
@@ -97,8 +102,6 @@ namespace WebApi
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
-
-            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

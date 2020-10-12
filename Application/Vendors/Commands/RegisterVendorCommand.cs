@@ -8,21 +8,25 @@ using Tymish.Domain.Entities;
 
 namespace Tymish.Application.Vendors.Commands
 {
-    public class RegisterVendorCommand : IRequest<Vendor>
+    public class RegisterVendorCommand : IRequest<string>
     {
         public Guid VendorId { get; set; }
         public string Password { get; set; }
         public string MobilePhone { get; set; }
     }
-    public class RegisterVendorHandler : IRequestHandler<RegisterVendorCommand, Vendor>
+    public class RegisterVendorHandler : IRequestHandler<RegisterVendorCommand, string>
     {
         private readonly ITymishDbContext _context;
-        public RegisterVendorHandler(ITymishDbContext context)
+        private readonly IAuthGateway _auth;
+        public RegisterVendorHandler(
+            ITymishDbContext context,
+            IAuthGateway auth)
         {
             _context = context;
+            _auth = auth;
         }
 
-        public async Task<Vendor> Handle(RegisterVendorCommand request, CancellationToken cancellationToken)
+        public async Task<string> Handle(RegisterVendorCommand request, CancellationToken cancellationToken)
         {
             var vendor = await _context
                 .Set<Vendor>()
@@ -37,7 +41,9 @@ namespace Tymish.Application.Vendors.Commands
             _context.Set<Vendor>().Update(vendor);            
             await _context.SaveChangesAsync(cancellationToken);
 
-            return vendor;
+            var jwt = _auth.GenerateVendorToken(vendor);
+
+            return jwt;
         }
     }
 }

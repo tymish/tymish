@@ -66,8 +66,8 @@ namespace Tymish.WebApi.Controllers
             return Ok(response);
         }
 
-        [HttpPost("login", Name="login")]
-        public async Task<IActionResult> Login(LoginCommand request)
+        [HttpPost("login", Name="loginVendor")]
+        public async Task<IActionResult> Login(LoginVendorCommand request)
         {
             var response = await _mediator.Send(request);
             return Ok(response);

@@ -70,6 +70,8 @@ namespace Tymish.WebApi.Controllers
         public async Task<IActionResult> Login(LoginVendorCommand request)
         {
             var response = await _mediator.Send(request);
+            if (string.IsNullOrWhiteSpace(response))
+                return Unauthorized();
             return Ok(response);
         }
     }

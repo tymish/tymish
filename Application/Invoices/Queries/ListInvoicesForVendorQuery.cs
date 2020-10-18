@@ -7,10 +7,12 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using AutoMapper;
+using Tymish.Application.Dtos;
 
 namespace Tymish.Application.Invoices.Query
 {
-    public class ListInvoicesForVendorQuery : IRequest<IList<Invoice>>
+    public class ListInvoicesForVendorQuery : IRequest<IList<InvoiceDto>>
     {
         public Guid VendorId { get; set; }
         public ListInvoicesForVendorQuery(Guid vendorId)
@@ -19,20 +21,27 @@ namespace Tymish.Application.Invoices.Query
         }
     }
 
-    public class ListInvoicesForVendorHandler : IRequestHandler<ListInvoicesForVendorQuery, IList<Invoice>>
+    public class ListInvoicesForVendorHandler : IRequestHandler<ListInvoicesForVendorQuery, IList<InvoiceDto>>
     {
         private readonly ITymishDbContext _context;
-        public ListInvoicesForVendorHandler(ITymishDbContext context) {
+        private readonly IMapper _mapper;
+        public ListInvoicesForVendorHandler(
+            ITymishDbContext context,
+            IMapper mapper)
+        {
             _context = context;
+            _mapper = mapper;
         }
 
-        public async Task<IList<Invoice>> Handle(ListInvoicesForVendorQuery request, CancellationToken cancellationToken)
+        public async Task<IList<InvoiceDto>> Handle(ListInvoicesForVendorQuery request, CancellationToken cancellationToken)
         {
-            return await _context
+            var invoices = await _context
                 .Set<Invoice>()
                 .Where(invoice
                     => invoice.VendorId == request.VendorId)
                 .ToListAsync(cancellationToken);
+
+            return _mapper.Map<List<Invoice>, IList<InvoiceDto>>(invoices);
         }
     }
 }

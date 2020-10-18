@@ -1,6 +1,6 @@
 using System.Net;
 using System.Reflection;
-
+using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
+using Tymish.Application.Dtos;
 using Tymish.Application.Interfaces;
 using Tymish.Gateways;
 using Tymish.Persistence;
@@ -41,7 +42,10 @@ namespace WebApi
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             });
             services.AddControllers();
+
             services.AddMediatR(Assembly.GetExecutingAssembly());
+            
+            services.AddAutoMapper(typeof(DefaultProfile).Assembly);
 
             // TODO: use dependency injection library
             services.AddMediatR(Assembly.Load("Application"));

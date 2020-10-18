@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Tymish.Application.Dtos;
 using Tymish.Application.Invoices.Query;
 using Tymish.Application.Vendors.Commands;
 using Tymish.Application.Vendors.Queries;
@@ -42,7 +43,7 @@ namespace Tymish.WebApi.Controllers
         }
 
         [HttpGet("{id}/invoices", Name="listVendorInvoices")]
-        [ProducesResponseType(typeof(IList<Invoice>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IList<InvoiceDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> ListInvoices(Guid id)
         {
             var request = new ListInvoicesForVendorQuery(id);

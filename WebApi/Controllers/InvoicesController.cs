@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Tymish.Application.Dtos;
 using Tymish.Application.Invoices.Commands;
 using Tymish.Application.Invoices.Query;
 using Tymish.Domain.Entities;
@@ -21,7 +22,7 @@ namespace Tymish.WebApi.Controllers
         }
 
         [HttpGet("{id}", Name="getInvoiceById")]
-        [ProducesResponseType(typeof(Invoice), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(InvoiceDto), StatusCodes.Status200OK)]
         public async Task<IActionResult> Get([FromRoute] Guid id)
         {
             var request = new GetInvoiceQuery(id);

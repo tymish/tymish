@@ -6,10 +6,12 @@ using MediatR;
 using Tymish.Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Tymish.Application.Exceptions;
+using Tymish.Application.Dtos;
+using AutoMapper;
 
 namespace Tymish.Application.Invoices.Query
 {
-    public class GetInvoiceQuery : IRequest<Invoice>
+    public class GetInvoiceQuery : IRequest<InvoiceDto>
     {
         public Guid InvoiceId { get; set; }
         public GetInvoiceQuery(Guid invoiceId)
@@ -18,14 +20,19 @@ namespace Tymish.Application.Invoices.Query
         }
     }
 
-    public class GetInvoiceHandler : IRequestHandler<GetInvoiceQuery, Invoice>
+    public class GetInvoiceHandler : IRequestHandler<GetInvoiceQuery, InvoiceDto>
     {
         private readonly ITymishDbContext _context;
-        public GetInvoiceHandler(ITymishDbContext context) {
+        private readonly IMapper _mapper;
+        public GetInvoiceHandler(
+            ITymishDbContext context,
+            IMapper mapper)
+        {
             _context = context;
+            _mapper = mapper;
         }
 
-        public async Task<Invoice> Handle(GetInvoiceQuery request, CancellationToken cancellationToken)
+        public async Task<InvoiceDto> Handle(GetInvoiceQuery request, CancellationToken cancellationToken)
         {
             var invoice = await _context
                 .Set<Invoice>()
@@ -37,7 +44,7 @@ namespace Tymish.Application.Invoices.Query
                 throw new NotFoundException(nameof(Invoice), request.InvoiceId);
             }
 
-            return invoice;
+            return _mapper.Map<Invoice, InvoiceDto>(invoice);
         }
     }
 }

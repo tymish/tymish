@@ -24,7 +24,7 @@ namespace Tymish.Gateways
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Sid, vendor.Id.ToString()),
+                    new Claim("sub", vendor.Id.ToString()),
                     new Claim(ClaimTypes.Email, vendor.Email)
                 }),
                 Expires = DateTime.UtcNow.AddDays(_options.ExpiryDays),

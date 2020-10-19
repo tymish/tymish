@@ -68,6 +68,7 @@ namespace Tymish.WebApi.Controllers
         }
 
         [HttpPost("login", Name="loginVendor")]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         public async Task<IActionResult> Login(LoginVendorCommand request)
         {
             var response = await _mediator.Send(request);

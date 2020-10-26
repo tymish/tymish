@@ -1,5 +1,6 @@
 using System.Net;
 using System.Reflection;
+using System.Text.Json.Serialization;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -10,7 +11,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using Newtonsoft.Json;
 using Tymish.Application.Dtos;
 using Tymish.Application.Interfaces;
 using Tymish.Gateways;
@@ -37,11 +37,16 @@ namespace WebApi
                 options.KnownProxies.Add(IPAddress.Parse("10.0.0.100"));
             });
 
-            services.AddMvc().AddNewtonsoftJson(options =>
-            {
-                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-            });
-            services.AddControllers();
+            services
+                .AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                });
+            
+            // This was used for circlar dependencies with Newtonsoft
+            // Maybe this isn't required for System.Text.Json
+            //options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
 
             services.AddMediatR(Assembly.GetExecutingAssembly());
             

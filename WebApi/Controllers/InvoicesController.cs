@@ -31,9 +31,10 @@ namespace Tymish.WebApi.Controllers
         }
 
         [HttpGet(Name="listInvoices")]
-        public async Task<IActionResult> ListInvoices([FromQuery] string status)
+        [ProducesResponseType(typeof(InvoiceDto[]), StatusCodes.Status200OK)]
+        public async Task<IActionResult> ListInvoices([FromQuery()] InvoiceStatus status)
         {
-            var request = new ListInvoicesQuery();
+            var request = new ListInvoicesQuery{Status = status};
             var response = await _mediator.Send(request);
             return Ok(response);
         }

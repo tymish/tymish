@@ -44,5 +44,25 @@ namespace Tymish.Gateways
                 mySecurityKey,
                 SecurityAlgorithms.HmacSha256Signature);
         }
+
+        public string GenerateUserToken(User user)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                    new Claim("sub", user.Id.ToString()),
+                    new Claim(ClaimTypes.Email, user.Email)
+                }),
+                Expires = DateTime.UtcNow.AddDays(_options.ExpiryDays),
+                Issuer = _options.Issuer,
+                Audience = _options.Audience,
+                SigningCredentials = SignToken(_options.Secret)
+            };
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
+        }
     }
 }

@@ -19,6 +19,7 @@ namespace Tymish.Application.Dtos
         public decimal PaidAmount { get; set; }
         public string PaymentReference { get; set; }
         public Guid VendorId { get; set; }
+        public VendorDto VendorDto { get; set; }
         public InvoiceDto()
         {
             TimeEntryDtos = new List<TimeEntryDto>();

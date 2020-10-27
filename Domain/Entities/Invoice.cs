@@ -14,6 +14,7 @@ namespace Tymish.Domain.Entities
         public decimal PaidAmount { get; set; }
         public string PaymentReference { get; set; }
         public Guid VendorId { get; set; }
+        public virtual Vendor? Vendor { get; set; }
         public Invoice()
         {
             PaymentReference = "";

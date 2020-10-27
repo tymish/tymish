@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using AutoMapper;
 using Tymish.Application.Dtos;
 using System;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace Tymish.Application.Invoices.Query
 {
@@ -29,8 +31,17 @@ namespace Tymish.Application.Invoices.Query
 
         public async Task<IList<InvoiceDto>> Handle(ListInvoicesQuery request, CancellationToken cancellationToken)
         {
+            Expression<Func<Invoice, bool>> statusFilter = request.Status switch
+            {
+                InvoiceStatus.Submitted => invoice => invoice.Submitted != null,
+                InvoiceStatus.Paid => invoice => invoice.Paid != null,
+                _ => invoice => true
+            };
+
             var invoices = await _context
                 .Set<Invoice>()
+                .Include(e => e.Vendor)
+                .Where(statusFilter)
                 .ToListAsync(cancellationToken);
             
             return _mapper.Map<List<Invoice>, IList<InvoiceDto>>(invoices);

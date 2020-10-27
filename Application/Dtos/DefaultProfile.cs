@@ -10,8 +10,17 @@ namespace Tymish.Application.Dtos
             CreateMap<Invoice, InvoiceDto>()
                 .ForMember(
                     dest => dest.TimeEntryDtos,
-                    opt => opt.MapFrom(src => src.TimeEntries));
+                    option => option.MapFrom(src => src.TimeEntries)
+                ).ForMember(
+                    dest => dest.VendorDto,
+                    option => option.MapFrom(src => src.Vendor)
+                );
+                
+                
+
             CreateMap<TimeEntry, TimeEntryDto>();
+            
+            CreateMap<Vendor, VendorDto>();
         }
     }
 }

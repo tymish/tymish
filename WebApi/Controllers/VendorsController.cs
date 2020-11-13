@@ -26,7 +26,7 @@ namespace Tymish.WebApi.Controllers
 
         #region GETs
         [HttpGet("{id}", Name="getVendor")]
-        [ProducesResponseType(typeof(Vendor), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(VendorDto), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetVendor(Guid id)
         {
             var request = new GetVendorQuery{VendorId = id};

@@ -10,7 +10,7 @@ namespace Tymish.Application.Dtos
         public string Email { get; set; }
         public string MobilePhone { get; set; }
         public decimal HourlyPay { get; set; }
-        public DateTime Created { get; }
+        public DateTime Created { get; set; }
         public DateTime? Registered { get; set; }
     }   
 }

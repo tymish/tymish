@@ -36,6 +36,7 @@ namespace Tymish.Application.Invoices.Query
         {
             var invoice = await _context
                 .Set<Invoice>()
+                .Include(e => e.Vendor)
                 .SingleOrDefaultAsync(invoice
                     => invoice.Id == request.InvoiceId);
 

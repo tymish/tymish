@@ -1,4 +1,3 @@
-using System.Net;
 using System.Reflection;
 using System.Text.Json.Serialization;
 using AutoMapper;
@@ -31,10 +30,14 @@ namespace WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            // This must happen first for Nginx forwarding to Kestrel
             services.Configure<ForwardedHeadersOptions>(options =>
             {
-                options.KnownProxies.Add(IPAddress.Parse("10.0.0.100"));
+                options.ForwardedHeaders =
+                    ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+                
+                // note sure if this is needed
+                // options.KnownProxies.Add(IPAddress.Parse("10.0.0.100"));
             });
 
             services
@@ -101,16 +104,11 @@ namespace WebApi
             }
             else
             {
+                app.UseForwardedHeaders(); // Nginx to Kestrel
                 app.UseMiddleware<ExceptionHandler>();
             }
 
             app.UseRouting();
-
-            // Nginx to Kestrel
-            app.UseForwardedHeaders(new ForwardedHeadersOptions
-            {
-                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-            });
 
             app.UseEndpoints(endpoints =>
             {

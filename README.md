@@ -140,3 +140,55 @@ psql # opens psql repl to run commands
 sudo -i -u postgres                     # use postgres account
 createuser --interactive --pwprompt     # create a user 
 ```
+
+## Forward Nginx calls to Kestrel
+### Modify `/etc/nginx/sites-available/default`
+```vim
+location / {
+    proxy_pass         http://localhost:5000;
+    proxy_http_version 1.1;
+    proxy_set_header   Upgrade $http_upgrade;
+    proxy_set_header   Connection keep-alive;
+    proxy_set_header   Host $host;
+    proxy_cache_bypass $http_upgrade;
+    proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header   X-Forwarded-Proto $scheme;
+}
+```
+
+### Add Kestrel to `systemd` service manager
+https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/linux-nginx?view=aspnetcore-5.0
+
+### Add the Kestrel service to systemd
+Create the file `/etc/systemd/system/<name>.service`
+```
+[Unit]
+Description=Tymish Api running on .NET Core Kestrel
+
+[Service]
+WorkingDirectory=/var/www/tymish-api
+ExecStart=/usr/bin/dotnet /var/www/tymish-api/WebApi.dll
+Restart=always
+# Restart service after 10 seconds if the dotnet service crashes:
+RestartSec=10
+KillSignal=SIGINT
+SyslogIdentifier=dotnet-tymish-api
+User=www-data
+Environment=ASPNETCORE_ENVIRONMENT=production
+Environment=DOTNET_PRINT_TELEMETRY_MESSAGE=false
+
+# Secret environment
+Environment=ConnectionStrings__TymishContext="<secret>"
+Environment=ApiKeys__SendGrid="<secret>"
+
+[Install]
+WantedBy=multi-user.target
+```
+
+`systemctl` commands
+``` bash
+sudo systemctl enable <name>.service # only need to enable it once
+sudo systemctl start <name>.service
+sudo systemctl status <name>.service
+sudo systemctl stop <name>.service
+```

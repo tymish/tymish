@@ -5,25 +5,12 @@ A dotnet core web api with postgres.
 ## Dev Setup
 
 ### 1. Install tools
-#### node 
+
 ```bash
-node --version
-v13.7.0
-```
-#### yarn
-```bash
-yarn --version
-1.22.0
-```
-#### PostgreSQL - It doesn't need to have the ubuntu part
-```bash
-psql --version
-psql (PostgreSQL) 10.12 (Ubuntu 10.12-0ubuntu0.18.04.1)
-```
-#### .NET Core SDK
-```bash
-dotnet --version
-3.1.102
+node --version # v14.15.0
+yarn --version # 1.22.5
+psql --version # 12.4
+dotnet --version # 5.0.100
 ```
 
 ### 2. Setup database
@@ -68,3 +55,88 @@ drop database "Tymish";
 ## VS Code Extensions
 Use the `ckolkman.vscode-postgres` extension to view postgres db.
 I am using the `dev` user not the `postgres` default user because it has no password.
+
+
+
+# Server Setup
+* Login `ssh -i .ssh/<private-key> root@<server-ip>`
+* set the key in `.ssh` and name it `root`
+
+## Required software
+* dotnet aspnetcore runtime
+* nginx web server
+* postgres database
+* Certbot SSL tool
+
+## Dotnet Core Runtime 5.0
+```bash
+wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+
+sudo dpkg -i packages-microsoft-prod.deb
+
+sudo apt update
+sudo apt install -y aspnetcore-runtime-5.0
+dotnet --info # verify install
+```
+
+## Nginx Web Server
+``` bash
+sudo apt update
+sudo apt install nginx
+nginx -v # verify install
+```
+
+## Add SSL to Nginx
+Make sure to point the domain to the server first.
+### Install Certbot
+``` bash
+sudo apt install certbot python3-certbot-nginx
+```
+
+### Run Certbot
+``` bash
+sudo certbot --nginx
+```
+
+### Renew SSL (Only do this if expired)
+``` bash
+certbot renew
+```
+
+## PostgreSQL
+### Install
+``` bash
+sudo apt update
+sudo apt install postgresql postgresql-contrib
+psql --version # verify install
+```
+### Restore Db
+
+Put the `create-db.sql` on the server.
+
+``` bash
+scp -i ~/.ssh/<private-key> /path/to/create-db.sql <user>@<server>:/path/to/dest
+```
+
+Move the scrip to postgres default user
+
+``` bash
+cp create-db.sql /var/lib/postgresql
+```
+
+Run the script
+
+``` bash
+sudo -i -u postgres 
+dropdb Tymish
+createdb Tymish
+psql -d Tymish -f create-db.sql
+psql # opens psql repl to run commands
+\l   # verify Tymish db is present
+```
+
+### Create a db user that EF Core connection string will use
+``` bash
+sudo -i -u postgres                     # use postgres account
+createuser --interactive --pwprompt     # create a user 
+```

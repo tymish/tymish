@@ -27,35 +27,31 @@ jobs:
 
     - name: Stop the the WebApi
       uses: appleboy/ssh-action@master
-      env: 
-        HOST: ${{ secrets.HOST }}
-        USERNAME: ${{ secrets.USERNAME }}
-        PORT: ${{ secrets.PORT }}
-        KEY: ${{ secrets.KEY }}
-      with:
-        script: systemctl stop kestrel-tymish-api-int.service
+      with: 
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.KEY }}
+        script: |
+          whoami
+          systemctl stop tymish-int-kestrel.service
 
     - name: SCP to Digital Ocean
-      uses: appleboy/scp-action@v0.0.7
-      env:
-        HOST: ${{ secrets.HOST }}
-        USERNAME: ${{ secrets.USERNAME }}
-        PORT: ${{ secrets.PORT }}
-        KEY: ${{ secrets.KEY }}
+      uses: appleboy/scp-action@master
       with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.KEY }}
         source: "WebApi/bin/Release/net5.0/publish"
         strip_components: 5
-        target: "/var/www/tymish-api"
+        target: "${{ secrets.TARGET_PATH }}"
         rm: true
     
     - name: Start the api
       uses: appleboy/ssh-action@master
-      env: 
-        HOST: ${{ secrets.HOST }}
-        USERNAME: ${{ secrets.USERNAME }}
-        PORT: ${{ secrets.PORT }}
-        KEY: ${{ secrets.KEY }}
-      with:
+      with: 
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.KEY }}
         script: |
-          systemctl start kestrel-tymish-api-int.service
-          systemctl status kestrel-tymish-api-int.service
+          systemctl start tymish-int-kestrel.service
+          systemctl status tymish-int-kestrel.service

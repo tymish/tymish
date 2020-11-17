@@ -2,6 +2,9 @@ name: deploy-int
 
 on:
   push:
+    paths-ignore:
+    - 'README.md'
+    - '_documentation'
     branches: [ master ]
 
 jobs:

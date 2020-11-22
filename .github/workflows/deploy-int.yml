@@ -25,16 +25,6 @@ jobs:
     - name: Build artifact
       run: dotnet publish WebApi --configuration Release --no-restore
 
-    - name: Stop the the WebApi
-      uses: appleboy/ssh-action@master
-      with: 
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        key: ${{ secrets.KEY }}
-        script: |
-          whoami
-          systemctl stop tymish-int-kestrel.service
-
     - name: SCP to Digital Ocean
       uses: appleboy/scp-action@master
       with:
@@ -46,12 +36,11 @@ jobs:
         target: "${{ secrets.TARGET_PATH }}"
         rm: true
     
-    - name: Start the api
+    - name: Restart the api
       uses: appleboy/ssh-action@master
       with: 
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.KEY }}
         script: |
-          systemctl start tymish-int-kestrel.service
-          systemctl status tymish-int-kestrel.service
+          systemctl restart tymish-int-kestrel.service

@@ -15,7 +15,7 @@ namespace Tymish.Gateways
 
         public async Task Send(string toEmail, string subject, string content)
         {
-            var from = new EmailAddress("test@example.com", "Example");
+            var from = new EmailAddress("robot@tymish.app", "Robot");
             var to = new EmailAddress(toEmail);
 
             var plainTextContent = content;

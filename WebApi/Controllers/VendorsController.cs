@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Tymish.Application.Dtos;
 using Tymish.Application.Invoices.Query;
 using Tymish.Application.Vendors.Commands;
@@ -18,10 +19,12 @@ namespace Tymish.WebApi.Controllers
     public class VendorsController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly IConfiguration _config;
 
-        public VendorsController(IMediator mediator)
+        public VendorsController(IMediator mediator, IConfiguration config)
         {
             _mediator = mediator;
+            _config = config;
         }
 
         #region GETs
@@ -56,6 +59,7 @@ namespace Tymish.WebApi.Controllers
         [ProducesResponseType(typeof(Vendor), StatusCodes.Status201Created)]
         public async Task<IActionResult> AddVendor([FromBody] AddVendorCommand request)
         {
+            request.VendorSiteDomain = _config.GetValue<string>("VendorDomain");
             var response = await _mediator.Send(request);
             return Ok(response);
         }

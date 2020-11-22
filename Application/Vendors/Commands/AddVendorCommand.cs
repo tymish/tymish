@@ -13,6 +13,7 @@ namespace Tymish.Application.Vendors.Commands
         public string GivenName { get; set; }
         public string FamilyName { get; set; }
         public decimal HourlyPay { get; set; }
+        public string VendorSiteDomain { get; set; }
     }
     public class AddVendorHandler : IRequestHandler<AddVendorCommand, Vendor>
     {
@@ -40,7 +41,7 @@ namespace Tymish.Application.Vendors.Commands
             await _email.Send(
                 request.Email,
                 "Dance Code invites you to register for Tymish",
-                $"http://127.0.0.1:4201/register/{vendor.Id}");
+                $"{request.VendorSiteDomain}/register/{vendor.Id}");
 
             return vendor;
         }

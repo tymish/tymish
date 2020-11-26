@@ -31,7 +31,7 @@ namespace Tymish.Application.Vendors.Commands
             var vendor = await _context
                 .Set<Vendor>()
                 .Where(vendor => 
-                    request.Email == vendor.Email
+                    request.Email.ToLower() == vendor.Email.ToLower()
                     && request.Password == vendor.Password)
                 .SingleOrDefaultAsync(cancellationToken);
             

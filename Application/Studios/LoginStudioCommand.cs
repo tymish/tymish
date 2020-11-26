@@ -31,7 +31,7 @@ namespace Tymish.Application.Vendors.Commands
             var user = await _context
                 .Set<User>()
                 .Where(user => 
-                    request.Email == user.Email
+                    request.Email.ToLower() == user.Email.ToLower()
                     && request.Password == user.Password)
                 .SingleOrDefaultAsync(cancellationToken);
             

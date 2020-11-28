@@ -15,13 +15,14 @@ namespace Tymish.Gateways
 
         public async Task Send(string toEmail, string subject, string content)
         {
-            var from = new EmailAddress("robot@tymish.app", "Robot");
+            var from = new EmailAddress("no-reply@tymish.app", "Hubert");
             var to = new EmailAddress(toEmail);
 
             var plainTextContent = content;
             var htmlContent = $"<a href=\"{content}\">{content}</a>";
 
             var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+
             var response = await _client.SendEmailAsync(msg);
         }
     }

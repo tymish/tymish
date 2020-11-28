@@ -10,7 +10,12 @@ namespace Tymish.Application.Vendors.Commands
 {
     public class LoginVendorCommand : IRequest<string>
     {
-        public string Email { get; set; }
+        private string _email;
+        public string Email
+        { 
+            get => _email;
+            set => _email = value.Trim().ToLower();
+        }
         public string Password { get; set; }
     }
 
@@ -31,7 +36,7 @@ namespace Tymish.Application.Vendors.Commands
             var vendor = await _context
                 .Set<Vendor>()
                 .Where(vendor => 
-                    request.Email.ToLower() == vendor.Email.ToLower()
+                    request.Email == vendor.Email
                     && request.Password == vendor.Password)
                 .SingleOrDefaultAsync(cancellationToken);
             

@@ -10,7 +10,12 @@ namespace Tymish.Application.Vendors.Commands
 {
     public class LoginStudioCommand : IRequest<string>
     {
-        public string Email { get; set; }
+        private string _email;
+        public string Email
+        { 
+            get => _email;
+            set => _email = value.Trim().ToLower();
+        }
         public string Password { get; set; }
     }
 
@@ -31,7 +36,7 @@ namespace Tymish.Application.Vendors.Commands
             var user = await _context
                 .Set<User>()
                 .Where(user => 
-                    request.Email.ToLower() == user.Email.ToLower()
+                    request.Email == user.Email
                     && request.Password == user.Password)
                 .SingleOrDefaultAsync(cancellationToken);
             

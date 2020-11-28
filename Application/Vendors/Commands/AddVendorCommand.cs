@@ -9,7 +9,12 @@ namespace Tymish.Application.Vendors.Commands
 {
     public class AddVendorCommand : IRequest<Vendor>
     {
-        public string Email { get; set; }
+        private string _email;
+        public string Email
+        { 
+            get => _email;
+            set => _email = value.Trim().ToLower();
+        }
         public string GivenName { get; set; }
         public string FamilyName { get; set; }
         public decimal HourlyPay { get; set; }
